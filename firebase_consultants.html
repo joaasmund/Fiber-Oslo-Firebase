@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head><title>Firebase Consultants</title></head>
+<body>
+<h2>Firebase Consultants Import</h2>
+<div id="log" style="font-family:monospace;white-space:pre"></div>
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA9TIh5qKW-ZGfinBXrWuwtfjcc9CSYV2Y",
+  authDomain: "fiber-oslo.firebaseapp.com",
+  projectId: "fiber-oslo",
+  storageBucket: "fiber-oslo.firebasestorage.app",
+  messagingSenderId: "1056378549332",
+  appId: "1:1056378549332:web:d6342337d1a4a3848d69c1"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const log = document.getElementById('log');
+
+const consultants = [
+  {name:'Kalle Rode',ep_user:'t984474',active:true,team_name:'Team 1'},
+  {name:'Marcus Amundsen',ep_user:'t984480',active:true,team_name:'Team 1'},
+  {name:'Alexander Intamon Rognstad',ep_user:'t979267',active:true,team_name:'Team 1'},
+  {name:'Arion Kristiansen Paulonen',ep_user:'t989648',active:true,team_name:'Team 1'},
+  {name:'Omar Gadalla',ep_user:'t995151',active:true,team_name:'Team 1'},
+  {name:'Alijan Younas Malik',ep_user:'t992860',active:true,team_name:'Team 1'},
+  {name:'Chris Sassita Nzanzu',ep_user:'t994781',active:true,team_name:'Team 1'},
+  {name:'Sander Nyseth',ep_user:'t995410',active:true,team_name:'Team 1'},
+  {name:'Charlie Bjørklund',ep_user:'t995738',active:true,team_name:'Team 1'},
+  {name:'Melvin Larsson',ep_user:'t996506',active:true,team_name:'Team 1'},
+  {name:'Nizar El Gharbi',ep_user:'t452663',active:true,team_name:'Team 1'},
+  {name:'Andreas Ytrelid',ep_user:'t452669',active:true,team_name:'Team 1'},
+  {name:'Bjørn Kristian Sveen',ep_user:'t454965',active:true,team_name:'Team 1'},
+  {name:'Simen Brenne',ep_user:'t456240',active:true,team_name:'Team 1'},
+  {name:'Aleksandra Løvenskiold',ep_user:'t456532',active:true,team_name:'Team 1'},
+  {name:'Luc Fransson',ep_user:'t462363',active:true,team_name:'Team 2'},
+  {name:'Oskar Ihlen',ep_user:'t461313',active:true,team_name:'Team 3'},
+  {name:'Mikkel Berentsen',ep_user:'t462381',active:true,team_name:'Team 1'},
+  {name:'Ludvig Beck-Vehre',ep_user:'t462375',active:true,team_name:'Team 1'},
+];
+
+async function importConsultants() {
+  log.textContent += `Importerer ${consultants.length} konsulenter...\n`;
+  let ok = 0;
+  for(const c of consultants) {
+    try {
+      await addDoc(collection(db, 'consultants'), c);
+      ok++;
+    } catch(e) {
+      log.textContent += 'FEIL: ' + e.message + '\n';
+    }
+  }
+  log.textContent += `\nFERDIG! ${ok} konsulenter importert.\n`;
+}
+importConsultants();
+</script>
+</body>
+</html>
