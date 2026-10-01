@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head><title>Firebase Setup</title></head>
+<body>
+<h2>Firebase Setup</h2>
+<div id="log" style="font-family:monospace;white-space:pre"></div>
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, setDoc, doc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA9TIh5qKW-ZGfinBXrWuwtfjcc9CSYV2Y",
+  authDomain: "fiber-oslo.firebaseapp.com",
+  projectId: "fiber-oslo",
+  storageBucket: "fiber-oslo.firebasestorage.app",
+  messagingSenderId: "1056378549332",
+  appId: "1:1056378549332:web:d6342337d1a4a3848d69c1"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const log = document.getElementById('log');
+
+async function setup() {
+  try {
+    log.textContent += 'Setter opp passord...\n';
+    await setDoc(doc(db, 'site_config', 'site_password'), { value: '7717' });
+    await setDoc(doc(db, 'site_config', 'admin_password'), { value: '2000' });
+    log.textContent += 'Passord OK!\n';
+    log.textContent += '\nALT ER KLART! Lukk denne siden.\n';
+  } catch(e) {
+    log.textContent += 'FEIL: ' + e.message + '\n';
+  }
+}
+setup();
+</script>
+</body>
+</html>
