@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<title>Salgsdashboard — Telenor Bedrift Fiber Oslo</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#070b14;color:#fff;font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+.shell{padding:16px 26px;max-width:1680px;margin:0 auto}
+.titles{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px}
+.eyebrow{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.18em;text-transform:uppercase;margin-bottom:6px}
+.h1{font-size:34px;font-weight:900;letter-spacing:-.01em}
+.h1 .accent{background:linear-gradient(90deg,#34d399,#22c55e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.live-pill{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.4);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:6px 14px;border-radius:20px}
+.ld{width:7px;height:7px;border-radius:50%;background:#10b981;animation:pulse 2s infinite;display:inline-block}
+.ld.err{background:#ef4444;animation:none}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border-radius:9px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;border:1px solid}
+.btn-green{background:rgba(52,211,153,.15);color:#34d399;border-color:rgba(52,211,153,.3)}
+.btn-pink{background:rgba(236,72,153,.15);color:#f472b6;border-color:rgba(236,72,153,.3)}
+.btn-blue{background:rgba(99,102,241,.18);color:#a5b4fc;border-color:rgba(99,102,241,.3)}
+.btn-amber{background:rgba(245,158,11,.12);color:#fbbf24;border-color:rgba(245,158,11,.28)}
+.top-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+.stat-box{background:#0d1320;border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:12px;position:relative;overflow:hidden}
+.stat-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.stat-box.b1::before{background:linear-gradient(90deg,#34d399,#22c55e)}
+.stat-box.b2::before{background:linear-gradient(90deg,#a78bfa,#8b5cf6)}
+.stat-box.b3::before{background:linear-gradient(90deg,#fbbf24,#f59e0b)}
+.stat-box.b4::before{background:linear-gradient(90deg,#60a5fa,#3b82f6)}
+.stat-ico{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.b1 .stat-ico{background:rgba(52,211,153,.15);color:#34d399}
+.b2 .stat-ico{background:rgba(167,139,250,.15);color:#a78bfa}
+.b3 .stat-ico{background:rgba(251,191,36,.15);color:#fbbf24}
+.b4 .stat-ico{background:rgba(96,165,250,.15);color:#60a5fa}
+.stat-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase}
+.stat-val{font-size:21px;font-weight:800;line-height:1.15}
+.main-grid{display:grid;grid-template-columns:1fr 300px;gap:14px}
+.card{background:#0d1320;border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:20px}
+.podium-row{display:grid;grid-template-columns:1fr 1.12fr 1fr;gap:14px;align-items:end;margin-bottom:18px}
+.pod-col{display:flex;flex-direction:column;align-items:center;gap:8px}
+.pod-av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;position:relative}
+.pod-1 .pod-av{width:68px;height:68px;font-size:24px;border:3px solid #fbbf24;box-shadow:0 0 22px rgba(250,204,21,.3)}
+.pod-2 .pod-av,.pod-3 .pod-av{width:50px;height:50px;font-size:17px}
+.crown{position:absolute;top:-19px;left:50%;transform:translateX(-50%);font-size:17px}
+.pod-name{font-size:14px;font-weight:700}
+.pod-1 .pod-name{font-size:16px}
+.pod-sub{font-size:10px;color:rgba(255,255,255,.35)}
+.pod-bar{width:100%;border-radius:12px 12px 0 0;padding:12px 8px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px}
+.pod-rank{font-size:11px;font-weight:800;color:rgba(255,255,255,.3)}
+.pod-1 .pod-bar{background:linear-gradient(180deg,rgba(250,204,21,.16),rgba(250,204,21,.04));border:1px solid rgba(250,204,21,.25);height:76px;justify-content:center}
+.pod-1 .pod-rank{font-size:16px;color:#fbbf24}
+.pod-2 .pod-bar{background:linear-gradient(180deg,rgba(167,139,250,.14),rgba(167,139,250,.03));border:1px solid rgba(167,139,250,.2);height:58px;justify-content:center}
+.pod-2 .pod-rank{color:#a78bfa}
+.pod-3 .pod-bar{background:linear-gradient(180deg,rgba(52,211,153,.14),rgba(52,211,153,.03));border:1px solid rgba(52,211,153,.2);height:48px;justify-content:center}
+.pod-3 .pod-rank{color:#34d399}
+.pod-val{font-size:16px;font-weight:800}
+.pod-1 .pod-val{font-size:19px}
+.chase-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin:2px 0 10px}
+.chase-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px}
+.chase-row{display:grid;grid-template-columns:20px 24px 1fr 70px 60px;gap:8px;align-items:center;padding:6px 6px;border-radius:8px;cursor:pointer;transition:background .15s}
+.chase-row:hover{background:rgba(255,255,255,.03)}
+.chase-rank{font-size:11px;font-weight:700;color:rgba(255,255,255,.3);text-align:center}
+.chase-av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0}
+.chase-name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chase-bar-bg{height:5px;border-radius:3px;background:rgba(255,255,255,.06);overflow:hidden}
+.chase-bar-fill{height:100%;border-radius:3px}
+.chase-val{font-size:10px;color:rgba(255,255,255,.32);text-align:right;white-space:nowrap}
+.feed-title{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.feed-dot{width:6px;height:6px;border-radius:50%;background:#10b981;animation:pulse 2s infinite;display:inline-block}
+.feed-list{display:flex;flex-direction:column;gap:2px;max-height:620px;overflow-y:auto}
+.feed-list::-webkit-scrollbar{width:4px}
+.feed-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+.feed-item{display:flex;align-items:center;gap:9px;padding:8px 6px;border-radius:9px}
+.feed-av{width:27px;height:27px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0}
+.feed-info{flex:1;min-width:0}
+.feed-name{font-size:11px;font-weight:700}
+.feed-prod{font-size:9px;color:rgba(255,255,255,.3)}
+.feed-val{font-size:11px;font-weight:800;color:#34d399;white-space:nowrap}
+/* Modals */
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:100;align-items:center;justify-content:center}
+.ov.open{display:flex}
+.modal{background:#0d1320;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:24px;width:480px;max-height:90vh;overflow-y:auto}
+.modal.wide{width:700px}
+.modal.full{width:95vw;max-width:1100px}
+.modal h3{font-size:15px;font-weight:700;margin-bottom:4px;color:#a5b4fc}
+.modal p{font-size:11px;color:rgba(255,255,255,.35);margin-bottom:16px}
+.mbtns{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.mbtn{border-radius:8px;padding:8px 18px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;border:1px solid}
+.mb-blue{background:rgba(99,102,241,.2);color:#a5b4fc;border-color:rgba(99,102,241,.4)}
+.mb-green{background:rgba(52,211,153,.15);color:#34d399;border-color:rgba(52,211,153,.3)}
+.mb-cancel{background:transparent;color:rgba(255,255,255,.35);border-color:rgba(255,255,255,.1)}
+.mb-red{background:rgba(239,68,68,.12);color:#f87171;border-color:rgba(239,68,68,.25)}
+.mb-amber{background:rgba(245,158,11,.1);color:#fbbf24;border-color:rgba(245,158,11,.25)}
+.mb-pink{background:rgba(236,72,153,.15);color:#f472b6;border-color:rgba(236,72,153,.35)}
+.smsg{font-size:11px;margin-top:10px;color:rgba(255,255,255,.4);min-height:16px}
+.chip{font-size:11px;color:rgba(255,255,255,.3);background:rgba(255,255,255,.06);padding:4px 12px;border-radius:20px}
+.fld{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.lbl{font-size:11px;font-weight:600;color:rgba(255,255,255,.4)}
+.hint{font-size:10px;color:rgba(255,255,255,.25);margin-top:2px}
+.inp{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff;font-size:13px;padding:10px 12px;font-family:'Inter',sans-serif;width:100%}
+.inp:focus{outline:none;border-color:rgba(99,102,241,.5)}
+.sel{background:#0d1320;border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff;font-size:13px;padding:10px 12px;font-family:'Inter',sans-serif;width:100%}
+.sel:focus{outline:none;border-color:rgba(99,102,241,.5)}
+.prod-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.prod-item{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:8px 10px;cursor:pointer;transition:all .15s}
+.prod-item:hover,.prod-item.sel-p{background:rgba(99,102,241,.15);border-color:rgba(99,102,241,.4)}
+.prod-item input{accent-color:#6366f1}
+.prod-name{font-size:12px;font-weight:600;flex:1}
+.prod-val{font-size:11px;color:rgba(255,255,255,.4)}
+/* Admin table */
+.admin-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:12px}
+.admin-table th{text-align:left;padding:7px 10px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.08);font-size:10px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.admin-table td{padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(255,255,255,.8);white-space:nowrap}
+.admin-table tr:hover td{background:rgba(255,255,255,.02)}
+.copy-btn{background:rgba(99,102,241,.18);color:#a5b4fc;border:1px solid rgba(99,102,241,.3);border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif}
+/* Consultant manager */
+.cons-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.cons-row:last-child{border-bottom:none}
+.cons-name{font-size:13px;font-weight:600;flex:1}
+.cons-user{font-size:11px;color:rgba(255,255,255,.35);min-width:70px}
+/* Announcement */
+.ann-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center}
+.ann-ov.show{display:flex}
+.ann-box{background:linear-gradient(135deg,#1e1b4b,#0d1320);border:2px solid rgba(250,204,21,.35);border-radius:20px;padding:44px 52px;text-align:center;position:relative;max-width:520px;width:90%;animation:popIn .3s ease}
+@keyframes popIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.ann-x{position:absolute;top:14px;right:16px;background:none;border:none;color:rgba(255,255,255,.4);font-size:22px;cursor:pointer}
+.ann-x:hover{color:#fff}
+.ann-emoji{font-size:44px;margin-bottom:14px}
+.ann-title2{font-size:26px;font-weight:900;color:#fbbf24;letter-spacing:.03em;line-height:1.25;margin-bottom:10px}
+.ann-body2{font-size:15px;color:rgba(255,255,255,.55);line-height:1.5}
+.ef{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.el{font-size:11px;font-weight:600;color:rgba(255,255,255,.4)}
+.ei{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff;font-size:18px;font-weight:700;padding:10px 12px;font-family:'Inter',sans-serif;width:100%;text-align:center}
+.ei:focus{outline:none;border-color:rgba(99,102,241,.5)}
+.ei.ov2{border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.06)}
+.egrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.status-btn{border:none;border-radius:20px;padding:2px 10px;font-size:10px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif}
+.status-godkjent{background:rgba(16,185,129,.2);color:#34d399;border:1px solid rgba(16,185,129,.35)}
+.status-avventer{background:rgba(245,158,11,.15);color:#fbbf24;border:1px solid rgba(245,158,11,.3)}
+.status-kansellert{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3)}
+.status-select{background:#0d1320;border:1px solid rgba(255,255,255,.12);border-radius:6px;color:#fff;font-size:10px;font-weight:700;padding:2px 6px;font-family:'Inter',sans-serif;cursor:pointer}
+.comment-inp{background:transparent;border:none;color:rgba(255,255,255,.65);font-size:11px;padding:2px 4px;width:100%;font-family:'Inter',sans-serif;outline:none;}
+.comment-inp:focus{color:#fff;border-bottom:1px solid rgba(99,102,241,.5);}
+.comment-inp::placeholder{color:rgba(255,255,255,.2)}
+.al{font-size:11px;font-weight:600;color:rgba(255,255,255,.4)}
+.ai{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff;font-size:13px;font-weight:600;padding:9px 12px;font-family:'Inter',sans-serif;width:100%}
+</style>
+</head>
+<body>
+
+<!-- Inngangspassord -->
+<div id="login-screen" style="position:fixed;inset:0;background:#070b14;z-index:999;display:flex;align-items:center;justify-content:center">
+  <div style="text-align:center;max-width:360px;width:90%">
+    <div style="font-size:13px;font-weight:700;color:#34d399;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px">Telenor Bedrift Fiber Oslo</div>
+    <div style="font-size:32px;font-weight:900;color:#fff;margin-bottom:32px">MÅNEDENS ARENA</div>
+    <div style="background:#0d1320;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:28px">
+      <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,.35);margin-bottom:12px">Skriv inn tilgangskode</div>
+      <input id="login-pw" type="password" placeholder="••••"
+        style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff;font-size:28px;font-weight:700;padding:12px;text-align:center;font-family:'Inter',sans-serif;letter-spacing:.3em;outline:none;margin-bottom:12px"
+        onkeydown="if(event.key==='Enter')checkLogin()">
+      <button onclick="checkLogin()"
+        style="width:100%;background:linear-gradient(90deg,#34d399,#22c55e);border:none;border-radius:8px;color:#fff;font-size:14px;font-weight:700;padding:12px;cursor:pointer;font-family:'Inter',sans-serif">
+        Logg inn
+      </button>
+      <div id="login-msg" style="font-size:11px;color:#f87171;margin-top:10px;min-height:16px"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+async function checkLogin(){
+  const pw=document.getElementById('login-pw').value;
+  const msg=document.getElementById('login-msg');
+  if(!pw){msg.textContent='Skriv inn kode.';return;}
+  msg.textContent='Sjekker...';
+  // Vent til Firebase er lastet og passordet er hentet
+  let attempts=0;
+  while(!window._sitePassword&&attempts<20){
+    await new Promise(r=>setTimeout(r,300));
+    attempts++;
+  }
+  if(window._sitePassword&&pw===window._sitePassword){
+    document.getElementById('login-screen').style.display='none';
+    sessionStorage.setItem('dashboard-auth','ok');
+    msg.textContent='';
+  } else if(!window._sitePassword){
+    msg.textContent='Feil ved tilkobling — prøv igjen.';
+  } else {
+    msg.textContent='Feil kode — prøv igjen.';
+    document.getElementById('login-pw').value='';
+  }
+}
+if(sessionStorage.getItem('dashboard-auth')==='ok'){
+  document.addEventListener('DOMContentLoaded',()=>{
+    document.getElementById('login-screen').style.display='none';
+  });
+}
+</script>
+<div class="shell">
+  <div class="titles">
+    <div>
+      <div class="eyebrow">Telenor Bedrift Fiber Oslo · <span id="month-lbl">Juni 2026</span></div>
+      <div class="h1">MÅNEDENS <span class="accent">ARENA</span></div>
+    </div>
+    <div class="top-right">
+      <div class="live-pill"><span class="ld" id="sync-dot"></span><span id="sync-lbl">Kobler til...</span><span id="clock" style="margin-left:6px"></span></div>
+      <div class="actions">
+        <button class="btn btn-green" onclick="openM('reg-modal')"><i class="ti ti-plus"></i> Registrer salg</button>
+        <button class="btn btn-pink" onclick="requireAdmin(openAnnAdmin)"><i class="ti ti-speakerphone"></i> Kunngjøring</button>
+        <button class="btn btn-blue" onclick="requireAdmin(()=>openM('add-modal'))"><i class="ti ti-table-import"></i> Lim inn data</button>
+        <button class="btn btn-amber" onclick="openAdmin()"><i class="ti ti-lock"></i> Admin</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="stat-strip">
+    <div class="stat-box b1"><div class="stat-ico"><i class="ti ti-currency-dollar"></i></div><div><div class="stat-lbl">Total omsetning</div><div class="stat-val" id="stat-omset">—</div></div></div>
+    <div class="stat-box b2"><div class="stat-ico"><i class="ti ti-chart-bar"></i></div><div><div class="stat-lbl">Fiber-salg totalt</div><div class="stat-val" id="stat-salg">—</div></div></div>
+    <div class="stat-box b3"><div class="stat-ico"><i class="ti ti-users"></i></div><div><div class="stat-lbl">Snitt per selger</div><div class="stat-val" id="stat-snitt">—</div></div></div>
+    <div class="stat-box b4"><div class="stat-ico"><i class="ti ti-target"></i></div><div><div class="stat-lbl">På mål (8 salg)</div><div class="stat-val" id="stat-paamaal">—</div></div></div>
+  </div>
+
+  <div class="main-grid">
+    <div class="left-col">
+      <div class="card">
+        <div class="podium-row" id="podium"></div>
+        <div class="chase-title">Jakter på pallen</div>
+        <div class="chase-grid" id="chase-list"></div>
+      </div>
+    </div>
+    <div class="right-col">
+      <div class="card">
+        <div class="feed-title"><span class="feed-dot"></span> Live · siste salg</div>
+        <div class="feed-list" id="feed-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Kunngjøring display -->
+<div class="ann-ov" id="ann-ov">
+  <div class="ann-box">
+    <button class="ann-x" onclick="document.getElementById('ann-ov').classList.remove('show')">✕</button>
+    <div class="ann-emoji" id="ann-emoji">📢</div>
+    <div class="ann-title2" id="ann-title"></div>
+    <div class="ann-body2" id="ann-body"></div>
+  </div>
+</div>
+
+<!-- Kunngjøring admin -->
+<div class="ov" id="ann-modal">
+  <div class="modal">
+    <h3><i class="ti ti-speakerphone"></i> Kunngjøring</h3>
+    <p>Dukker opp på alle skjermer med en gang.</p>
+    <div class="af"><span class="al">Emoji</span><input class="ai" id="ann-e" type="text" placeholder="🎉" maxlength="4" style="width:70px;font-size:22px;text-align:center"></div>
+    <div class="af"><span class="al">Tittel</span><input class="ai" id="ann-t" type="text" placeholder="F.eks. KALLE HAR 10 SALG!"></div>
+    <div class="af"><span class="al">Beskrivelse (valgfritt)</span><input class="ai" id="ann-b" type="text" placeholder="Gratulerer! 🥳"></div>
+    <div class="mbtns">
+      <button class="mbtn mb-pink" onclick="publishAnn()"><i class="ti ti-broadcast"></i> Publiser</button>
+      <button class="mbtn mb-cancel" onclick="closeModal('ann-modal')">Avbryt</button>
+      <button class="mbtn mb-red" id="del-ann-btn" onclick="deleteAnn()" style="display:none;margin-left:auto"><i class="ti ti-trash"></i> Fjern</button>
+    </div>
+    <div class="smsg" id="ann-msg"></div>
+  </div>
+</div>
+
+<!-- Lim inn data -->
+<div class="ov" id="add-modal">
+  <div class="modal">
+    <h3><i class="ti ti-table-import"></i> Lim inn salgsdata</h3>
+    <p>Lim inn tab-separert data fra Excel. Alle TV-er oppdateres automatisk.</p>
+    <textarea id="paste-area" class="inp" style="min-height:110px;font-family:monospace;font-size:12px;resize:vertical;margin-bottom:12px" placeholder="Consultant	Date of sale	Week	Value	Product	Ordrenummer&#10;Andreas	18.08.2026	34	7000	Fiber 60	3978191&#10;(Ordrenummer er valgfritt — utelat kolonnen hvis du ikke har den)"></textarea>
+    <div class="mbtns">
+      <button class="mbtn mb-blue" onclick="addData()"><i class="ti ti-upload"></i> Last opp</button>
+      <button class="mbtn mb-cancel" onclick="closeModal('add-modal')">Avbryt</button>
+      <span class="chip" id="row-count">—</span>
+      <button class="mbtn mb-red" onclick="resetData()" style="margin-left:auto"><i class="ti ti-trash"></i> Nullstill</button>
+    </div>
+    <div class="smsg" id="add-msg"></div>
+  </div>
+</div>
+
+<!-- Individvisning -->
+<div class="ov" id="my-sales-modal">
+  <div class="modal full">
+    <h3 id="my-sales-title"><i class="ti ti-list"></i> Mine salg</h3>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <p id="my-sales-sub" style="margin:0;flex:1"></p>
+      <select class="sel" id="my-sales-month" style="width:140px" onchange="filterMySalesMonth()"></select>
+    </div>
+    <div style="overflow-x:auto;max-height:65vh;overflow-y:auto">
+      <table class="admin-table" id="my-sales-table">
+        <thead><tr>
+          <th>Status</th><th>Dato</th><th>Måned</th><th>Uke</th><th>Ordrenr.</th><th>Antall</th><th>Produkt</th><th>CPO</th><th>Kommentar</th>
+        </tr></thead>
+        <tbody id="my-sales-tbody"></tbody>
+      </table>
+    </div>
+    <div class="mbtns" style="margin-top:14px">
+      <button class="mbtn mb-cancel" onclick="closeModal('my-sales-modal')">Lukk</button>
+      <div class="smsg" id="my-sales-msg" style="margin-left:10px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Rediger selger -->
+<div class="ov" id="edit-modal">
+  <div class="modal">
+    <h3 id="edit-title"><i class="ti ti-pencil"></i> Rediger</h3>
+    <p>Skriv inn riktige tall direkte. La feltet stå tomt for å bruke faktiske data.</p>
+    <div class="egrid">
+      <div class="ef"><span class="el">FIBER-salg</span><input class="ei" id="edit-salg" type="number" min="0" placeholder="—"><span style="font-size:10px;color:rgba(255,255,255,.2);margin-top:2px">Faktisk: <span id="edit-salg-a">—</span></span></div>
+      <div class="ef"><span class="el">Omsetning (kr)</span><input class="ei" id="edit-omset" type="number" min="0" placeholder="—"><span style="font-size:10px;color:rgba(255,255,255,.2);margin-top:2px">Faktisk: <span id="edit-omset-a">—</span></span></div>
+    </div>
+    <div class="mbtns">
+      <button class="mbtn mb-blue" onclick="saveEdit()"><i class="ti ti-check"></i> Lagre</button>
+      <button class="mbtn mb-cancel" onclick="closeModal('edit-modal')">Avbryt</button>
+      <button class="mbtn mb-amber" id="clear-btn" onclick="clearEdit()" style="display:none;margin-left:auto"><i class="ti ti-x"></i> Fjern korrigering</button>
+    </div>
+    <div class="smsg" id="edit-msg"></div>
+  </div>
+</div>
+
+<!-- Registrer salg -->
+<div class="ov" id="reg-modal">
+  <div class="modal wide">
+    <h3><i class="ti ti-receipt"></i> Registrer salg</h3>
+    <p>Velg navn, skriv inn ordrenummer og velg produkt(er). Hvert produkt registreres som én linje.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div class="fld">
+        <span class="lbl">Ditt navn</span>
+        <select class="sel" id="reg-name"></select>
+      </div>
+      <div class="fld">
+        <span class="lbl">Ordrenummer</span>
+        <div id="order-inputs">
+          <input class="inp" id="reg-order-0" type="text" placeholder="F.eks. 7656754 eller Case-07656754" style="margin-bottom:6px">
+        </div>
+        <span class="hint">Fiber/TBB: nøyaktig 7 siffer (f.eks. 7656754) · NS/PORT: nøyaktig 11 siffer · Maks 1 primærprodukt per ordrenummer</span>
+      </div>
+    </div>
+    <div id="addon-order-section" style="display:none;margin-bottom:14px"></div>
+    <div class="lbl" style="margin-bottom:8px">Velg produkt(er)</div>
+    <div class="prod-grid" id="prod-grid"></div>
+    <div id="lead-price-section" style="display:none"></div>
+    <div id="tbb-binding-section" style="display:none;margin-bottom:14px"></div>
+
+    <!-- Splitt salg -->
+    <div style="margin-bottom:14px">
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-bottom:10px">
+        <input type="checkbox" id="split-toggle" onchange="toggleSplit()" style="accent-color:#6366f1;width:16px;height:16px">
+        <span class="lbl" style="margin:0">Del salg med en annen selger</span>
+      </label>
+      <div id="split-section" style="display:none;background:rgba(99,102,241,.07);border:1px solid rgba(99,102,241,.2);border-radius:10px;padding:14px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px">
+          <div class="fld">
+            <span class="lbl">Medselger</span>
+            <select class="sel" id="split-name"></select>
+          </div>
+          <div class="fld">
+            <span class="lbl">Din andel (%)</span>
+            <select class="sel" id="split-pct" onchange="updateSplitPreview()">
+              <option value="10">10%</option>
+              <option value="20">20%</option>
+              <option value="30">30%</option>
+              <option value="40">40%</option>
+              <option value="50" selected>50%</option>
+              <option value="60">60%</option>
+              <option value="70">70%</option>
+              <option value="80">80%</option>
+              <option value="90">90%</option>
+            </select>
+          </div>
+        </div>
+        <div id="split-preview" style="font-size:12px;color:rgba(255,255,255,.5);background:rgba(0,0,0,.2);border-radius:7px;padding:8px 12px"></div>
+      </div>
+    </div>
+
+    <div class="mbtns">
+      <button class="mbtn mb-green" onclick="submitReg()"><i class="ti ti-check"></i> Registrer</button>
+      <button class="mbtn mb-cancel" onclick="closeModal('reg-modal')">Avbryt</button>
+    </div>
+    <div class="smsg" id="reg-msg"></div>
+  </div>
+</div>
+
+<!-- Admin (passord) -->
+<div class="ov" id="admin-pw-modal">
+  <div class="modal" style="width:340px">
+    <h3><i class="ti ti-lock"></i> Admin</h3>
+    <p>Skriv inn adminkode for å fortsette.</p>
+    <div class="fld"><input class="inp" id="admin-pw" type="password" placeholder="Kode" onkeydown="if(event.key==='Enter')checkAdmin()"></div>
+    <div class="mbtns">
+      <button class="mbtn mb-amber" onclick="checkAdmin()">Åpne</button>
+      <button class="mbtn mb-cancel" onclick="closeModal('admin-pw-modal')">Avbryt</button>
+    </div>
+    <div class="smsg" id="pw-msg"></div>
+  </div>
+</div>
+
+<!-- Admin panel -->
+<div class="ov" id="admin-modal">
+  <div class="modal full">
+    <h3><i class="ti ti-settings"></i> Adminpanel</h3>
+    <p>Salgslogg og konsulentadministrasjon.</p>
+    <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+      <button class="mbtn mb-blue" onclick="showAdminTab('log')" id="tab-log">Salgslogg</button>
+      <button class="mbtn mb-cancel" onclick="showAdminTab('cons')" id="tab-cons">Konsulenter</button>
+      <button class="mbtn mb-cancel" onclick="showAdminTab('uke')" id="tab-uke">Ukesstatistikk</button>
+      <button class="copy-btn" onclick="copyLog()" id="copy-log-btn" style="margin-left:auto">Kopier til Salgsark</button>
+      <button class="copy-btn" onclick="copyLogNoStatus()" id="copy-log-no-status-btn" style="margin-left:8px;background:rgba(52,211,153,.15);color:#34d399;border-color:rgba(52,211,153,.3)">Kopier til Internrapport</button>
+    </div>
+    <div id="team-filter-row" style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+      <button class="mbtn mb-blue" id="tf-total" onclick="setTeamFilter('Total')">Alle team</button>
+      <button class="mbtn mb-cancel" id="tf-team1" onclick="setTeamFilter('Team 1')">Team 1</button>
+      <button class="mbtn mb-cancel" id="tf-team2" onclick="setTeamFilter('Team 2')">Team 2</button>
+      <button class="mbtn mb-cancel" id="tf-team3" onclick="setTeamFilter('Team 3')">Team 3</button>
+      <div style="width:1px;background:rgba(255,255,255,.1);margin:0 4px"></div>
+      <button class="mbtn mb-blue" id="sf-alle" onclick="setStatusFilter('alle')">Alle statuser</button>
+      <button class="mbtn mb-cancel" id="sf-avventer" onclick="setStatusFilter('avventer')" style="color:#fbbf24;border-color:rgba(245,158,11,.3)">⏳ Avventer</button>
+      <button class="mbtn mb-cancel" id="sf-godkjent" onclick="setStatusFilter('godkjent')" style="color:#34d399;border-color:rgba(16,185,129,.3)">✓ Godkjent</button>
+      <button class="mbtn mb-cancel" id="sf-kansellert" onclick="setStatusFilter('kansellert')" style="color:#f87171;border-color:rgba(239,68,68,.3)">✕ Kansellert</button>
+    </div>
+    </div>
+    <div id="admin-log-section">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <span style="font-size:11px;font-weight:600;color:rgba(255,255,255,.4)">Måned:</span>
+        <select class="sel" id="admin-month-sel" style="width:140px" onchange="renderAdminTable()"></select>
+      </div>
+      <div style="overflow-x:auto;max-height:60vh;overflow-y:auto">
+        <table class="admin-table" id="admin-table">
+          <thead><tr>
+            <th></th>
+            <th>Status</th>
+            <th>Konsulent</th><th>ep-bruker</th><th>Dato solgt</th><th>Måned</th><th>Uke</th><th>Team</th><th>Ordrenr.</th><th>Nettbutikk</th><th>Antall</th><th>Produkt</th><th>CPO</th>
+          </tr></thead>
+          <tbody id="admin-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div id="admin-cons-section" style="display:none">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+        <div class="fld"><span class="lbl">Fullt navn</span><input class="inp" id="new-cons-name" type="text" placeholder="F.eks. Kalle Rode"></div>
+        <div class="fld"><span class="lbl">ep-bruker</span><input class="inp" id="new-cons-user" type="text" placeholder="F.eks. t984474"></div>
+      </div>
+      <div class="fld" style="margin-bottom:14px">
+        <span class="lbl">Team</span>
+        <select class="sel" id="new-cons-team">
+          <option value="Team 1">Team 1</option>
+          <option value="Team 2">Team 2</option>
+          <option value="Team 3">Team 3</option>
+        </select>
+      </div>
+      <button class="mbtn mb-green" onclick="addConsultant()" style="margin-bottom:16px"><i class="ti ti-plus"></i> Legg til</button>
+      <div id="cons-list"></div>
+    </div>
+
+    <div id="admin-uke-section" style="display:none">
+      <!-- Teamfilter -->
+      <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+        <button class="mbtn mb-blue" id="utf-total" onclick="setUkeTeamFilter('Total')">Alle team</button>
+        <button class="mbtn mb-cancel" id="utf-team1" onclick="setUkeTeamFilter('Team 1')">Team 1</button>
+        <button class="mbtn mb-cancel" id="utf-team2" onclick="setUkeTeamFilter('Team 2')">Team 2</button>
+        <button class="mbtn mb-cancel" id="utf-team3" onclick="setUkeTeamFilter('Team 3')">Team 3</button>
+      </div>
+      <div style="overflow-x:auto;max-height:65vh;overflow-y:auto;display:flex;flex-direction:column;gap:20px">
+        <!-- Totaloversikt per uke -->
+        <div>
+          <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Totalt per uke</div>
+          <table class="admin-table" id="uke-table">
+            <thead><tr>
+              <th>Uke</th>
+              <th style="color:#34d399">Fiber-salg</th>
+              <th style="color:#a5b4fc">Wifi Connect Inne</th>
+              <th style="color:#fbbf24">TBB-salg</th>
+            </tr></thead>
+            <tbody id="uke-tbody"></tbody>
+          </table>
+        </div>
+        <!-- Per konsulent per uke -->
+        <div>
+          <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Fiber-salg per konsulent per uke</div>
+          <div id="uke-individ-wrap" style="overflow-x:auto">
+            <table class="admin-table" id="uke-individ-table">
+              <thead id="uke-individ-head"></thead>
+              <tbody id="uke-individ-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mbtns" style="margin-top:14px">
+      <button class="mbtn mb-cancel" onclick="closeModal('admin-modal')">Lukk</button>
+    </div>
+    <div class="smsg" id="admin-msg"></div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, where, orderBy, onSnapshot, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA9TIh5qKW-ZGfinBXrWuwtfjcc9CSYV2Y",
+  authDomain: "fiber-oslo.firebaseapp.com",
+  projectId: "fiber-oslo",
+  storageBucket: "fiber-oslo.firebasestorage.app",
+  messagingSenderId: "1056378549332",
+  appId: "1:1056378549332:web:d6342337d1a4a3848d69c1"
+};
+const fbApp = initializeApp(firebaseConfig);
+const db = getFirestore(fbApp);
+
+// Hent passord fra Firebase og gjør tilgjengelig for login
+(async()=>{
+  try{
+    const snap=await getDoc(doc(db,'site_config','site_password'));
+    if(snap.exists()) window._sitePassword=snap.data().value;
+  }catch(e){}
+})();
+
+// Supabase-kompatibelt lag over Firebase
+function makeQuery(table, filterFn=null){
+  return {
+    then: async (resolve) => {
+      const snap = await getDocs(collection(db, table));
+      let data = snap.docs.map(d=>({id:d.id,...d.data()}));
+      if(filterFn) data=data.filter(filterFn);
+      resolve({data, error:null});
+    },
+    [Symbol.toStringTag]:'Promise',
+    catch:()=>{},
+    order:()=>makeQuery(table, filterFn),
+    limit:(n)=>makeQuery(table, filterFn ? (r=>filterFn(r)) : null, n),
+    eq:(col,val)=>makeQuery(table, r=>(filterFn?filterFn(r):true)&&r[col]==val),
+    ilike:(col,val)=>makeQuery(table, r=>(filterFn?filterFn(r):true)&&(r[col]||'').toLowerCase().includes(val.toLowerCase().replace(/%/g,''))),
+    gt:(col,val)=>makeQuery(table, r=>(filterFn?filterFn(r):true)&&r[col]>val),
+    select:()=>makeQuery(table, filterFn),
+  };
+}
+
+const sb = {
+  from: (table) => ({
+    select: () => makeQuery(table),
+    insert: (rows) => ({
+      then: async (resolve) => {
+        const arr = Array.isArray(rows)?rows:[rows];
+        let error = null;
+        for(const row of arr){
+          try{ await addDoc(collection(db, table), row); } catch(e){ error=e; }
+        }
+        resolve({error});
+      },
+      [Symbol.toStringTag]:'Promise',
+      catch:()=>{},
+    }),
+    update: (data) => ({
+      eq: (col, val) => ({
+        then: async (resolve) => {
+          const snap = await getDocs(collection(db, table));
+          let error = null;
+          for(const d of snap.docs){
+            if(d.data()[col]==val){
+              try{ await updateDoc(doc(db, table, d.id), data); } catch(e){ error=e; }
+            }
+          }
+          resolve({error});
+        },
+        [Symbol.toStringTag]:'Promise',
+        catch:()=>{},
+      }),
+    }),
+    delete: () => ({
+      eq: (col, val) => ({
+        then: async (resolve) => {
+          const snap = await getDocs(collection(db, table));
+          for(const d of snap.docs){ if(d.data()[col]==val) await deleteDoc(doc(db, table, d.id)); }
+          resolve({error:null});
+        },
+        [Symbol.toStringTag]:'Promise',
+        catch:()=>{},
+      }),
+      neq: (col, val) => ({
+        then: async (resolve) => {
+          const snap = await getDocs(collection(db, table));
+          for(const d of snap.docs){ if(d.data()[col]!==val) await deleteDoc(doc(db, table, d.id)); }
+          resolve({error:null});
+        },
+        [Symbol.toStringTag]:'Promise',
+        catch:()=>{},
+      }),
+    }),
+  }),
+  channel: () => ({
+    on: () => ({ subscribe: (cb) => { if(cb) cb('SUBSCRIBED'); return {}; } })
+  }),
+};
+
+const PRODUCTS=[
+  {name:'FIBER 20',cpo:5000},{name:'FIBER 60',cpo:7000},{name:'FIBER 100',cpo:9000},
+  {name:'FIBER 200',cpo:12000},{name:'FIBER 400',cpo:12000},{name:'FIBER 600',cpo:12000},
+  {name:'FIBER 1GB',cpo:12000},
+  {name:'TBB 20',cpo:3000,tbb:true,tbbHigh:false},
+  {name:'TBB 40',cpo:3000,tbb:true,tbbHigh:false},
+  {name:'TBB 60',cpo:3000,tbb:true,tbbHigh:false},
+  {name:'TBB 100',cpo:3000,tbb:true,tbbHigh:false},
+  {name:'TBB 200',cpo:4500,tbb:true,tbbHigh:true},
+  {name:'TBB 400',cpo:4500,tbb:true,tbbHigh:true},
+  {name:'SAFEZONE INTERNETT',cpo:250},{name:'LEAD WIFI CONNECT',cpo:700},
+  {name:'WIFI CONNECT INNE',cpo:750},{name:'5G Reserve',cpo:400},
+  {name:'NS BASIS',cpo:650},{name:'NS BASIS TALE',cpo:900},{name:'NS BASIS DATA',cpo:900},
+  {name:'NS FLYT 5',cpo:1700},{name:'NS FLYT 20',cpo:2500},{name:'NS FLYT 50',cpo:2500},
+  {name:'NS FRIHET',cpo:2750},{name:'NS PREMIUM',cpo:3000},{name:'NS BED TOTAL',cpo:900},
+  {name:'PORT BASIS',cpo:650},{name:'PORT BASIS TALE',cpo:900},{name:'PORT BASIS DATA',cpo:900},
+  {name:'PORT FLYT 5',cpo:1700},{name:'PORT FLYT 20',cpo:2500},{name:'PORT FLYT 50',cpo:2500},
+  {name:'PORT FRIHET',cpo:2750},{name:'PORT PREMIUM',cpo:3000},{name:'PORT BED TOTAL',cpo:900}
+];
+
+// Produkttyper
+const isPrimaryProduct=p=>isF(p.name)||p.name.startsWith('TBB ')||p.name.startsWith('NS ')||p.name.startsWith('PORT ');
+const isAddon=p=>!isPrimaryProduct(p);
+// Addons som arver ordrenummer fra primærprodukt
+const ADDON_NAMES=['WIFI CONNECT AKS','SAFEZONE INTERNETT','LEAD WIFI CONNECT','WIFI CONNECT INNE','5G Reserve'];
+
+const ALIAS={'alexander':'rognstad','aleksander':'rognstad','aleksander rognstad':'rognstad'};
+const AC=[['#6366f1','#1e1b4b'],['#10b981','#052e16'],['#f59e0b','#2d1d00'],['#8b5cf6','#2e1065'],['#ec4899','#500724'],['#14b8a6','#042f2e'],['#3b82f6','#1e3a5f'],['#ef4444','#450a0a'],['#a855f7','#3b0764'],['#22c55e','#052e16'],['#06b6d4','#082f49'],['#f97316','#431407'],['#84cc16','#1a2e05'],['#e879f9','#4a044e']];
+const SMAL=8,OMAL=80000;
+const MONTHS=['','Januar','Februar','Mars','April','Mai','Juni','Juli','August','September','Oktober','November','Desember'];
+
+let allRows=[],corrections=[],activeAnn=null,consultants=[],registrations=[];
+let currentSeller=null,currentMK=null,activeTeamFilter='Total',activeStatusFilter='alle';
+
+const gac=n=>{let h=0;for(let i=0;i<n.length;i++)h=(h*31+n.charCodeAt(i))%AC.length;return AC[h];};
+const ini=n=>n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+const kr=n=>new Intl.NumberFormat('nb-NO',{maximumFractionDigits:0}).format(n)+' kr';
+const isF=p=>p.toUpperCase().includes('FIBER');
+const pd=ds=>{const p=ds.split('.');return p.length===3?new Date(+p[2],+p[1]-1,+p[0]):new Date(0);};
+const gmk=ds=>{const p=ds.split('.');return p.length===3?p[1]+'.'+p[2]:'';};
+const gml=k=>{const m=['','Jan','Feb','Mar','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Des'];const[mm,yy]=k.split('.');return(m[+mm]||mm)+' '+yy;};
+const setSync=ok=>{document.getElementById('sync-dot').className='ld'+(ok?'':' err');document.getElementById('sync-lbl').textContent=ok?'Live':'Frakoblet';};
+
+// Normalize name through alias + match to consultant list
+const normNameToKey=n=>{
+  const low=n.toLowerCase().trim();
+  const aliased=ALIAS[low]||low;
+  // Try to match against active consultant display names
+  const match=consultants.find(c=>c.name.toLowerCase()===aliased||ini(c.name).toLowerCase()===aliased||c.name.toLowerCase().includes(aliased)||aliased.includes(c.name.toLowerCase().split(' ').pop()));
+  return match?match.name:n;
+};
+const normName=n=>{
+  const low=n.toLowerCase().trim();
+  return ALIAS[low]||low;
+};
+const isActive=n=>{
+  const low=normName(n);
+  return consultants.some(c=>c.active&&(c.name.toLowerCase()===low||c.name.toLowerCase().split(' ').pop()===low||normName(c.name)===low));
+};
+function getDisplayName(fullName){
+  const firstName=fullName.split(' ')[0];
+  // Tell hvor mange aktive konsulenter har samme fornavn
+  const duplicates=consultants.filter(c=>c.active&&c.name.split(' ')[0]===firstName);
+  if(duplicates.length>1){
+    const lastInitial=fullName.split(' ').pop()[0].toUpperCase();
+    return`${firstName} ${lastInitial}.`;
+  }
+  return firstName;
+}
+const getKey=n=>{
+  const low=normName(n);
+  const match=consultants.find(c=>c.name.toLowerCase()===low||c.name.toLowerCase().split(' ').pop()===low||normName(c.name)===low);
+  return match?match.name.toLowerCase():low;
+};
+
+window.openM=id=>document.getElementById(id).classList.add('open');
+window.closeModal=id=>document.getElementById(id).classList.remove('open');
+['ann-modal','add-modal','edit-modal','reg-modal','admin-pw-modal','admin-modal','my-sales-modal'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el)el.addEventListener('click',e=>{if(e.target===el)window.closeModal(id);});
+});
+
+// ISO week number
+function getISOWeek(date){
+  const d=new Date(date);d.setHours(0,0,0,0);
+  d.setDate(d.getDate()+3-(d.getDay()+6)%7);
+  const week1=new Date(d.getFullYear(),0,4);
+  return 1+Math.round(((d-week1)/86400000-3+(week1.getDay()+6)%7)/7);
+}
+
+// Format date as dd.mm.yyyy
+function todayStr(){
+  const d=new Date();
+  const dd=String(d.getDate()).padStart(2,'0');
+  const mm=String(d.getMonth()+1).padStart(2,'0');
+  return`${dd}.${mm}.${d.getFullYear()}`;
+}
+
+async function loadConsultants(){
+  const {data}=await sb.from('consultants').select('*').order('name');
+  consultants=data||[];
+  populateRegSelect();
+  renderConsList();
+}
+async function loadData(){
+  const {data,error}=await sb.from('registrations').select('*');
+  if(error){setSync(false);return;}
+  setSync(true);
+  // Ekskluder kansellerte fra dashboardvisning
+  allRows=(data||[])
+    .filter(r=>(r.status||'avventer')!=='kansellert')
+    .map(r=>({
+      name:normalizeName(r.consultant).split(' ')[0],
+      dateStr:r.date_sold,
+      value:r.cpo||0,
+      product:r.product
+    }));
+  document.getElementById('row-count').textContent=allRows.length+' rader i DB';
+  render();
+}
+async function loadCorrections(){
+  const {data}=await sb.from('corrections').select('*');
+  corrections=data||[];render();
+}
+// Normaliser konsulentnanv ved lasting
+const NAME_MAP={
+  'Alexander Rognstad':'Alexander Intamon Rognstad',
+  'Chris Sassita':'Chris Sassita Nzanzu',
+  'Nizar El gharbi':'Nizar El Gharbi',
+  'Nizar El Gharbi':'Nizar El Gharbi',
+  'Aleksander Rognstad':'Alexander Intamon Rognstad',
+  'Aleksander Intamon Rognstad':'Alexander Intamon Rognstad',
+};
+function normalizeName(n){return NAME_MAP[n?.trim()]||n?.trim();}
+
+async function loadRegistrations(){
+  const {data}=await sb.from('registrations').select('*').order('date_sold',{ascending:false});
+  registrations=(data||[]).map(r=>({...r,consultant:normalizeName(r.consultant)}));
+  // Oppdater dashboard fra samme data
+  allRows=registrations
+    .filter(r=>(r.status||'avventer')!=='kansellert')
+    .map(r=>({
+      name:r.consultant.split(' ')[0],
+      dateStr:r.date_sold,
+      value:r.cpo||0,
+      product:r.product
+    }));
+  renderAdminTable();
+  render();
+}
+async function loadAnn(){
+  const {data}=await sb.from('announcements').select('*').order('created_at',{ascending:false}).limit(1);
+  const ann=data&&data.length?data[0]:null;
+  activeAnn=ann;
+  if(ann){
+    document.getElementById('ann-emoji').textContent=ann.emoji||'📢';
+    document.getElementById('ann-title').textContent=ann.title||'';
+    document.getElementById('ann-body').textContent=ann.body||'';
+    document.getElementById('ann-ov').classList.add('show');
+  } else {
+    document.getElementById('ann-ov').classList.remove('show');
+  }
+}
+
+// Firebase realtime listeners
+onSnapshot(collection(db,'registrations'),()=>{loadRegistrations();},()=>{setSync(false);});
+onSnapshot(collection(db,'corrections'),loadCorrections);
+onSnapshot(collection(db,'announcements'),loadAnn);
+onSnapshot(collection(db,'consultants'),loadConsultants);
+setSync(true);
+
+const LEAD_PRODUCTS=['LEAD WIFI CONNECT'];
+const isLead=p=>LEAD_PRODUCTS.includes(p.name);
+
+// Populate product grid
+document.getElementById('prod-grid').innerHTML=PRODUCTS.map((p,i)=>`
+  <label class="prod-item${isLead(p)?' lead-prod':''}" id="plbl-${i}" title="${isLead(p)?'Lead-produkt — registreres separat når utfallet er kjent':''}">
+    <input type="checkbox" id="prod-${i}" onchange="toggleProd(${i})">
+    <span class="prod-name">${p.name}${isLead(p)?` <span style="font-size:9px;color:#fbbf24;font-weight:700">LEAD</span>`:''}</span>
+    <span class="prod-val" id="prod-val-${i}">${isLead(p)?'variabel':new Intl.NumberFormat('nb-NO').format(p.cpo)+' kr'}</span>
+  </label>`).join('');
+
+window.toggleProd=i=>{
+  const checked=document.getElementById(`prod-${i}`).checked;
+  const p=PRODUCTS[i];
+  document.getElementById(`plbl-${i}`).classList.toggle('sel-p',checked);
+
+  // Sjekk konflikt: lead vs ikke-lead
+  const selected=PRODUCTS.filter((_,j)=>document.getElementById(`prod-${j}`).checked);
+  const hasLead=selected.some(x=>isLead(x));
+  const hasNonLead=selected.some(x=>!isLead(x));
+  if(hasLead&&hasNonLead){
+    // Fjern det sist hukede
+    document.getElementById(`prod-${i}`).checked=false;
+    document.getElementById(`plbl-${i}`).classList.remove('sel-p');
+    const msg=document.getElementById('reg-msg');
+    msg.style.color='#fbbf24';
+    msg.textContent='WIFI CONNECT AKS og LEAD WIFI CONNECT må registreres separat — de kan ikke kombineres med andre produkter. Registrer leadet når du vet utfallet.';
+    setTimeout(()=>{msg.textContent='';msg.style.color='';},4000);
+    return;
+  }
+
+  // Vis/skjul lead-pris-felt
+  updateTbbBinding();
+  updateLeadPriceFields();
+  if(document.getElementById('split-toggle').checked) updateSplitPreview();
+  updateOrderInputs();
+};
+
+function updateTbbBinding(){
+  const selected=PRODUCTS.filter((_,i)=>document.getElementById(`prod-${i}`).checked);
+  const tbbSelected=selected.filter(p=>p.tbb);
+  const section=document.getElementById('tbb-binding-section');
+  if(!section)return;
+  if(tbbSelected.length===0){section.style.display='none';section.innerHTML='';return;}
+  section.style.display='block';
+  section.innerHTML=`<div style="background:rgba(99,102,241,.07);border:1px solid rgba(99,102,241,.2);border-radius:9px;padding:12px 14px">
+    <div class="lbl" style="margin-bottom:10px"><i class="ti ti-clock"></i> Binding</div>
+    ${tbbSelected.map((p,i)=>`
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+        <span style="font-size:11px;color:rgba(255,255,255,.4);min-width:80px">${p.name}</span>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+          <input type="radio" name="tbb-binding-${i}" id="tbb-bind-yes-${i}" value="binding" onchange="updateTbbCpo()" checked style="accent-color:#6366f1">
+          <span style="font-size:11px;color:#f1f5f9">Med binding <span style="color:rgba(255,255,255,.35)">(${new Intl.NumberFormat('nb-NO').format(p.tbbHigh?4500:3000)} kr)</span></span>
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+          <input type="radio" name="tbb-binding-${i}" id="tbb-bind-no-${i}" value="ingen" onchange="updateTbbCpo()" style="accent-color:#6366f1">
+          <span style="font-size:11px;color:#f1f5f9">Uten binding <span style="color:rgba(255,255,255,.35)">(2 000 kr)</span></span>
+        </label>
+      </div>`).join('')}
+  </div>`;
+}
+
+window.updateTbbCpo=()=>{
+  if(document.getElementById('split-toggle').checked) updateSplitPreview();
+};
+
+function updateLeadPriceFields(){
+  const selected=PRODUCTS.filter((_,i)=>document.getElementById(`prod-${i}`).checked);
+  const leads=selected.filter(p=>isLead(p));
+  const section=document.getElementById('lead-price-section');
+  if(!section)return;
+  if(leads.length>0){
+    section.style.display='block';
+    section.innerHTML=`<div style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:9px;padding:12px 14px;margin-bottom:14px">
+      <div class="lbl" style="color:#fbbf24;margin-bottom:6px"><i class="ti ti-info-circle"></i> Lead-registrering</div>
+      <p style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:10px">Registreres kun når utfallet er kjent. Lager én linje for leadet (700 kr) + én linje per aksess (250 kr).</p>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:11px;color:rgba(255,255,255,.4)">Antall aksesser solgt</span>
+        <select class="sel" id="lead-aks-qty" style="width:130px">
+          <option value="0">Ingen aksesser</option>
+          ${[1,2,3,4,5,6,7,8,9,10].map(n=>`<option value="${n}">${n} aksess${n>1?'er':''} = ${new Intl.NumberFormat('nb-NO').format(n*250)} kr</option>`).join('')}
+        </select>
+      </div>
+    </div>`;
+  } else {
+    section.style.display='none';
+    section.innerHTML='';
+  }
+}
+
+const WIFI_INNE='WIFI CONNECT INNE';
+const QTY_ADDONS=['SAFEZONE INTERNETT','5G Reserve'];
+
+function updateOrderInputs(){
+  const selected=PRODUCTS.filter((_,i)=>document.getElementById(`prod-${i}`).checked);
+  const primaries=selected.filter(p=>isPrimaryProduct(p));
+  const addons=selected.filter(p=>isAddon(p)&&!isLead(p));
+  const container=document.getElementById('order-inputs');
+  const addonSection=document.getElementById('addon-order-section');
+
+  // Valider WIFI CONNECT INNE antall
+  const wifiInne=addons.find(p=>p.name===WIFI_INNE);
+  const fiberCount=primaries.length||1;
+  const maxWifi=fiberCount*4;
+
+  // Bygg ordrenummer-felt for primærprodukter
+  container.innerHTML='';
+  if(primaries.length===0){
+    container.innerHTML='<input class="inp" id="reg-order-0" type="text" placeholder="Ordrenummer" style="margin-bottom:6px">';
+  } else {
+    primaries.forEach((p,i)=>{
+      const wrap=document.createElement('div');
+      wrap.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:6px';
+      wrap.innerHTML=`<input class="inp" id="reg-order-${i}" type="text" placeholder="Ordrenummer for ${p.name}" style="flex:1">`;
+      container.appendChild(wrap);
+    });
+  }
+
+  if(!addonSection) return;
+
+  if(addons.length===0){addonSection.style.display='none';addonSection.innerHTML='';return;}
+
+  let html='<div style="margin-top:6px">';
+
+  addons.forEach((a,i)=>{
+    const isWifi=a.name===WIFI_INNE;
+    const isQtyAddon=QTY_ADDONS.includes(a.name);
+    const has2=primaries.length===2;
+
+    html+=`<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:10px 12px;margin-bottom:8px">`;
+    html+=`<div style="font-size:12px;font-weight:600;margin-bottom:8px;color:#f1f5f9">${a.name}</div>`;
+
+    if(isWifi){
+      // WIFI CONNECT INNE: antall + fordeling per ordrenummer
+      const maxQ=maxWifi;
+      html+=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <span style="font-size:11px;color:rgba(255,255,255,.4)">Antall aksesspunkter (maks ${maxQ})</span>
+        <select class="sel" id="wifi-qty" style="width:80px" onchange="updateWifiDistrib()">
+          ${Array.from({length:maxQ},(_,n)=>`<option value="${n+1}">${n+1}</option>`).join('')}
+        </select>
+        <span style="font-size:11px;color:rgba(255,255,255,.3)">× 750 kr</span>
+      </div>`;
+      if(has2){
+        html+=`<div id="wifi-distrib" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="font-size:11px;color:rgba(255,255,255,.4)">Fordeling:</span>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="font-size:11px;color:rgba(255,255,255,.4)">${primaries[0].name}:</span>
+            <select class="sel" id="wifi-split-0" style="width:60px" onchange="updateWifiSplit()">
+              ${Array.from({length:5},(_,n)=>`<option value="${n}">${n}</option>`).join('')}
+            </select>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="font-size:11px;color:rgba(255,255,255,.4)">${primaries[1].name}:</span>
+            <span id="wifi-split-1-display" style="font-size:12px;font-weight:700;color:#a5b4fc">0</span>
+          </div>
+        </div>`;
+      }
+    } else if(isQtyAddon){
+      // SAFEZONE og 5G Reserve: maks 1 per fiber, velg ordrenummer eller Begge
+      html+=`<div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:11px;color:rgba(255,255,255,.4)">Tilhører</span>
+        <select class="sel" id="addon-order-${i}" style="flex:1">
+          ${primaries.map((p,pi)=>`<option value="${pi}">${p.name}</option>`).join('')}
+          ${has2?'<option value="both">Begge</option>':''}
+        </select>
+      </div>`;
+    } else {
+      // Andre addons: velg ordrenummer
+      if(has2){
+        html+=`<div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:11px;color:rgba(255,255,255,.4)">Tilhører</span>
+          <select class="sel" id="addon-order-${i}" style="flex:1">
+            ${primaries.map((p,pi)=>`<option value="${pi}">${p.name}</option>`).join('')}
+          </select>
+        </div>`;
+      }
+    }
+    html+='</div>';
+  });
+
+  html+='</div>';
+  addonSection.style.display='block';
+  addonSection.innerHTML=html;
+
+  if(document.getElementById('split-toggle').checked) updateSplitPreview();
+}
+
+window.updateWifiDistrib=()=>{
+  const qty=parseInt(document.getElementById('wifi-qty')?.value||'1');
+  const splitSel=document.getElementById('wifi-split-0');
+  if(!splitSel)return;
+  splitSel.innerHTML=Array.from({length:qty+1},(_,n)=>`<option value="${n}">${n}</option>`).join('');
+  updateWifiSplit();
+};
+
+window.updateWifiSplit=()=>{
+  const qty=parseInt(document.getElementById('wifi-qty')?.value||'1');
+  const s0=parseInt(document.getElementById('wifi-split-0')?.value||'0');
+  const s1=qty-s0;
+  const disp=document.getElementById('wifi-split-1-display');
+  if(disp)disp.textContent=s1;
+};
+
+function populateRegSelect(){
+  const sel=document.getElementById('reg-name');
+  const splitSel=document.getElementById('split-name');
+  const current=sel.value;
+  const opts='<option value="">Velg navn...</option>'+
+    consultants.filter(c=>c.active).sort((a,b)=>a.name.localeCompare(b.name))
+    .map(c=>`<option value="${c.name}">${getDisplayName(c.name)}</option>`).join('');
+  sel.innerHTML=opts;
+  splitSel.innerHTML='<option value="">Velg medselger...</option>'+
+    consultants.filter(c=>c.active).sort((a,b)=>a.name.localeCompare(b.name))
+    .map(c=>`<option value="${c.name}">${getDisplayName(c.name)}</option>`).join('');
+  if(current)sel.value=current;
+}
+
+window.toggleSplit=()=>{
+  const on=document.getElementById('split-toggle').checked;
+  document.getElementById('split-section').style.display=on?'block':'none';
+  if(on)updateSplitPreview();
+};
+
+window.updateSplitPreview=()=>{
+  const selected=PRODUCTS.filter((_,i)=>document.getElementById(`prod-${i}`).checked);
+  const total=selected.reduce((a,p)=>a+p.cpo,0);
+  const myPct=parseInt(document.getElementById('split-pct').value);
+  const otherPct=100-myPct;
+  const mySum=Math.round(total*myPct/100);
+  const otherSum=total-mySum;
+  const otherName=document.getElementById('split-name').value;
+  const myName=document.getElementById('reg-name').value;
+  const kr=n=>new Intl.NumberFormat('nb-NO').format(n)+' kr';
+  document.getElementById('split-preview').innerHTML=
+    `Total: <b>${kr(total)}</b> &nbsp;|&nbsp; `+
+    `${myName?myName.split(' ')[0]:'Du'}: <b style="color:#34d399">${myPct}% = ${kr(mySum)}</b> &nbsp;|&nbsp; `+
+    `${otherName?otherName.split(' ')[0]:'Medselger'}: <b style="color:#a78bfa">${otherPct}% = ${kr(otherSum)}</b>`;
+};
+
+window.submitReg=async()=>{
+  const name=document.getElementById('reg-name').value;
+  const msg=document.getElementById('reg-msg');
+  if(!name){msg.textContent='Velg navn.';return;}
+  const selected=PRODUCTS.filter((_,i)=>document.getElementById(`prod-${i}`).checked);
+  if(!selected.length){msg.textContent='Velg minst ett produkt.';return;}
+
+  // For TBB: beregn CPO basert på binding-valg
+  const tbbSelected=selected.filter(p=>p.tbb);
+  tbbSelected.forEach((p,i)=>{
+    const bindEl=document.getElementById(`tbb-bind-yes-${i}`);
+    const hasBinding=bindEl?bindEl.checked:true;
+    p._cpo=hasBinding?(p.tbbHigh?4500:3000):2000;
+  });
+  const leadSelected=selected.filter(p=>isLead(p));
+  leadSelected.forEach(p=>{
+    p._cpo=700;
+    p._qty=1;
+    p._aksQty=parseInt(document.getElementById('lead-aks-qty')?.value||'0');
+  });
+
+  const primaries=selected.filter(p=>isPrimaryProduct(p));
+  const addons=selected.filter(p=>isAddon(p));
+
+  const hasNSorPORT=primaries.some(p=>p.name.startsWith('NS ')||p.name.startsWith('PORT '));
+  const hasFiberTBB=primaries.some(p=>isF(p.name)||p.name.startsWith('TBB '));
+  if(hasNSorPORT&&hasFiberTBB){msg.textContent='Du kan ikke blande NS/PORT med FIBER/TBB i samme registrering.';return;}
+
+  // Les og valider ordrenumre for primærprodukter
+  const orderInputs=document.getElementById('order-inputs').querySelectorAll('input');
+  const orders=[];
+  for(let i=0;i<orderInputs.length;i++){
+    const raw=orderInputs[i].value.trim().toUpperCase();
+    let order='';
+    if(hasNSorPORT){
+      const digits=raw.replace(/\D/g,'');
+      if(digits.length!==11){msg.textContent=`Ordrenummer ${i+1}: NS/PORT krever nøyaktig 11 siffer.`;return;}
+      order=digits;
+    } else {
+      const digits=raw.replace(/\D/g,'');
+      if(digits.length!==7){msg.textContent=`Ordrenummer ${i+1}: Fiber/TBB krever nøyaktig 7 siffer.`;return;}
+      order=digits;
+    }
+    orders.push(order);
+  }
+
+  // Bygg produkt → ordrenummer mapping + antall per produkt
+  const productOrderMap=new Map();
+  const productQtyMap=new Map();
+  primaries.forEach((p,i)=>{productOrderMap.set(p,orders[i]||orders[0]);productQtyMap.set(p,1);});
+
+  // Addons
+  addons.forEach((a,i)=>{
+    const isWifi=a.name===WIFI_INNE;
+    const isQtyAddon=QTY_ADDONS.includes(a.name);
+    const has2=primaries.length===2;
+
+    if(isWifi){
+      const qty=parseInt(document.getElementById('wifi-qty')?.value||'1');
+      if(has2){
+        const s0=parseInt(document.getElementById('wifi-split-0')?.value||'0');
+        const s1=qty-s0;
+        // Lag separate entries for hvert ordrenummer
+        if(s0>0){
+          const clone0={...a,_wifiQty:s0};
+          productOrderMap.set(clone0,orders[0]);
+          productQtyMap.set(clone0,s0);
+          addons[i]=clone0; // replace
+        }
+        if(s1>0){
+          const clone1={...a,_wifiQty:s1,_wifiSplit:true};
+          productOrderMap.set(clone1,orders[1]);
+          productQtyMap.set(clone1,s1);
+          if(s0>0) addons.push(clone1); else {addons[i]=clone1;}
+        }
+      } else {
+        productOrderMap.set(a,orders[0]);
+        productQtyMap.set(a,qty);
+      }
+    } else if(isQtyAddon){
+      const sel=document.getElementById(`addon-order-${i}`);
+      const val=sel?sel.value:'0';
+      if(val==='both'&&has2){
+        // Legg til på begge ordrenumre
+        const clone={...a,_both:true};
+        productOrderMap.set(a,orders[0]);
+        productQtyMap.set(a,1);
+        productOrderMap.set(clone,orders[1]);
+        productQtyMap.set(clone,1);
+        addons.push(clone);
+      } else {
+        const idx=parseInt(val)||0;
+        productOrderMap.set(a,orders[idx]||orders[0]);
+        productQtyMap.set(a,1);
+      }
+    } else {
+      if(primaries.length<=1){
+        productOrderMap.set(a,orders[0]);
+      } else {
+        const sel=document.getElementById(`addon-order-${i}`);
+        const idx=sel?parseInt(sel.value):0;
+        productOrderMap.set(a,orders[idx]||orders[0]);
+      }
+      productQtyMap.set(a,1);
+    }
+  });
+
+  const cons=consultants.find(c=>c.name===name);
+  if(!cons){msg.textContent='Fant ikke konsulenten.';return;}
+
+  // Sjekk splitt
+  const isSplit=document.getElementById('split-toggle').checked;
+  let splitCons=null,myPct=100,otherPct=0;
+  if(isSplit){
+    const splitName=document.getElementById('split-name').value;
+    if(!splitName){msg.textContent='Velg medselger.';return;}
+    if(splitName===name){msg.textContent='Du kan ikke dele med deg selv.';return;}
+    splitCons=consultants.find(c=>c.name===splitName);
+    if(!splitCons){msg.textContent='Fant ikke medselger.';return;}
+    myPct=parseInt(document.getElementById('split-pct').value);
+    otherPct=100-myPct;
+    if(myPct+otherPct!==100){msg.textContent='Prosentandel må summere til 100%.';return;}
+  }
+
+  const today=todayStr();
+  const dateParts=today.split('.');
+  const dateObj=new Date(+dateParts[2],+dateParts[1]-1,+dateParts[0]);
+  const monthName=MONTHS[+dateParts[1]];
+  const weekNum=getISOWeek(dateObj);
+
+  msg.textContent='Sjekker ordrenummer...';
+
+  // Hent alle unike ordrenumre som vil bli brukt
+  const allOrderNums=[...new Set([...productOrderMap.values()])].filter(Boolean);
+
+  for(const ord of allOrderNums){
+    // Bruk registrations som allerede er lastet inn
+    const real=(registrations||[]).filter(r=>
+      r.order_number&&
+      r.order_number.trim().toLowerCase()!=='historisk'&&
+      r.order_number.trim().toLowerCase()===ord.trim().toLowerCase()
+    );
+
+    if(real.length===0) continue;
+
+    const uniqueCons=new Set(real.map(r=>r.consultant.toLowerCase().trim()));
+
+    if(!isSplit){
+      msg.textContent=`Ordrenummer ${ord} er allerede registrert av ${[...uniqueCons].join(' og ')}. Bruk splitt hvis salget deles.`;
+      return;
+    } else {
+      const myKey=cons.name.toLowerCase().trim();
+      const otherKey=splitCons?splitCons.name.toLowerCase().trim():'';
+      const alreadyByMe=real.some(r=>r.consultant.toLowerCase().trim()===myKey);
+      const alreadyByOther=real.some(r=>r.consultant.toLowerCase().trim()===otherKey);
+
+      if(alreadyByMe){msg.textContent=`Du har allerede registrert ordrenummer ${ord}.`;return;}
+      if(alreadyByOther){msg.textContent=`${splitCons.name.split(' ')[0]} har allerede registrert ordrenummer ${ord}.`;return;}
+      if(uniqueCons.size>=2){msg.textContent=`Ordrenummer ${ord} har allerede to selgere. Kan ikke legge til flere.`;return;}
+    }
+  }
+
+  msg.textContent='Registrerer...';
+
+  // Bygg rader — splitt verdier per produkt
+  const regRows=[];
+  const salesRows=[];
+
+  const allProducts=[...productOrderMap.keys()];
+  allProducts.forEach(p=>{
+    const pOrder=productOrderMap.get(p)||orders[0];
+    const qty=productQtyMap.get(p)||1;
+
+    // WIFI CONNECT INNE: lag én linje per aksesspunkt
+    const iterations=p.name===WIFI_INNE?qty:1;
+    const unitCpo=p._cpo||p.cpo;
+
+    for(let q=0;q<iterations;q++){
+      const effectiveCpo=unitCpo;
+      const myVal=isSplit?Math.round(effectiveCpo*myPct/100):effectiveCpo;
+      const otherVal=isSplit?(effectiveCpo-myVal):0;
+
+      regRows.push({consultant:cons.name,ep_user:cons.ep_user,date_sold:today,
+        month_name:monthName,week_number:weekNum,team:'Fiber Oslo',
+        order_number:pOrder,nettbutikk:'0',quantity:1,product:p.name,cpo:myVal});
+
+      if(isSplit&&splitCons){
+        regRows.push({consultant:splitCons.name,ep_user:splitCons.ep_user,date_sold:today,
+          month_name:monthName,week_number:weekNum,team:'Fiber Oslo',
+          order_number:pOrder,nettbutikk:'0',quantity:1,product:p.name,cpo:otherVal});
+      }
+    }
+
+    // LEAD WIFI CONNECT: legg til aksess-linjer
+    if(isLead(p)&&p._aksQty>0){
+      for(let a=0;a<p._aksQty;a++){
+        const aksVal=isSplit?Math.round(250*myPct/100):250;
+        const aksOther=isSplit?(250-aksVal):0;
+        regRows.push({consultant:cons.name,ep_user:cons.ep_user,date_sold:today,
+          month_name:monthName,week_number:weekNum,team:'Fiber Oslo',
+          order_number:pOrder,nettbutikk:'0',quantity:1,product:'WIFI CONNECT AKS',cpo:aksVal});
+        if(isSplit&&splitCons){
+          regRows.push({consultant:splitCons.name,ep_user:splitCons.ep_user,date_sold:today,
+            month_name:monthName,week_number:weekNum,team:'Fiber Oslo',
+            order_number:pOrder,nettbutikk:'0',quantity:1,product:'WIFI CONNECT AKS',cpo:aksOther});
+        }
+      }
+    }
+  });
+
+  const {error:regErr}=await sb.from('registrations').insert(regRows);
+  if(regErr){msg.textContent='Feil: '+regErr.message;return;}
+
+  PRODUCTS.forEach((_,i)=>{
+    document.getElementById(`prod-${i}`).checked=false;
+    document.getElementById(`plbl-${i}`).classList.remove('sel-p');
+  });
+  const container=document.getElementById('order-inputs');
+  container.innerHTML='<input class="inp" id="reg-order-0" type="text" placeholder="Ordrenummer" style="margin-bottom:6px">';
+  const addonSec=document.getElementById('addon-order-section');
+  if(addonSec){addonSec.style.display='none';addonSec.innerHTML='';}
+  const tbbSec=document.getElementById('tbb-binding-section');
+  if(tbbSec){tbbSec.style.display='none';tbbSec.innerHTML='';}
+  const leadSec=document.getElementById('lead-price-section');
+  if(leadSec){leadSec.style.display='none';leadSec.innerHTML='';}
+  document.getElementById('split-toggle').checked=false;
+  document.getElementById('split-section').style.display='none';
+  document.getElementById('split-name').value='';
+  document.getElementById('split-pct').value='50';
+  msg.style.color='#34d399';
+  msg.textContent=`✓ ${selected.length} produkt(er) registrert!`;
+  loadRegistrations();loadCorrections();
+  setTimeout(()=>{msg.textContent='';msg.style.color='';window.closeModal('reg-modal');},2000);
+};
+
+// Add data (paste)
+const parseTSV=txt=>{
+  const lines=txt.trim().split('\n').filter(l=>l.trim());
+  const rows=[];let s=lines[0]&&lines[0].toLowerCase().includes('consultant')?1:0;
+  for(let i=s;i<lines.length;i++){
+    const c=lines[i].split('\t');if(c.length<5)continue;
+    const consultant=c[0].trim(),date_of_sale=c[1].trim(),week=c[2].trim();
+    const value=parseFloat(c[3].replace(/[^0-9.,]/g,'').replace(',','.'))||0;
+    const product=c[4].trim();
+    // Ta ordrenummer som det er — trimmer kun whitespace
+    const order_number=c[5]?c[5].trim():'historisk';
+    if(!consultant)continue;
+    rows.push({consultant,date_of_sale,week,value,product,order_number});
+  }
+  return rows;
+};
+
+window.addData=async()=>{
+  const txt=document.getElementById('paste-area').value;
+  const rows=parseTSV(txt);
+  if(!rows.length){alert('Ingen gyldige rader.');return;}
+  const msg=document.getElementById('add-msg');
+  msg.textContent='Laster opp '+rows.length+' rader...';
+
+  // Insert into sales
+  const salesRows=rows.map(r=>({consultant:r.consultant,date_of_sale:r.date_of_sale,week:r.week,value:r.value,product:r.product}));
+  const {error}=await sb.from('sales').insert(salesRows);
+  if(error){msg.textContent='Feil: '+error.message;return;}
+
+  // Also insert into registrations
+  const regRows=rows.map(r=>{
+    const dateParts=r.date_of_sale.split('.');
+    const dateObj=dateParts.length===3?new Date(+dateParts[2],+dateParts[1]-1,+dateParts[0]):new Date();
+    const monthName=MONTHS[dateObj.getMonth()+1]||'';
+    // Alltid beregn uke fra dato — ignorer uke-kolonnen
+    const weekNum=getISOWeek(dateObj);
+    const cons=consultants.find(c=>c.name.toLowerCase().startsWith(r.consultant.toLowerCase())||c.name.split(' ')[0].toLowerCase()===r.consultant.toLowerCase());
+    return{
+      consultant:cons?cons.name:r.consultant,
+      ep_user:cons?cons.ep_user:'ukjent',
+      date_sold:r.date_of_sale,
+      month_name:monthName,
+      week_number:weekNum,
+      team:'Fiber Oslo',
+      order_number:r.order_number,
+      nettbutikk:'0',
+      quantity:1,
+      product:r.product,
+      cpo:r.value
+    };
+  });
+  await sb.from('registrations').insert(regRows);
+
+  document.getElementById('paste-area').value='';
+  msg.textContent='✓ '+rows.length+' rader lastet opp!';
+  loadRegistrations();loadCorrections();
+  setTimeout(()=>{msg.textContent='';window.closeModal('add-modal');},2000);
+};
+window.resetData=async()=>{
+  if(!confirm('Slette ALLE salgsdata fra dashboard OG adminlogg?'))return;
+  const msg=document.getElementById('add-msg');
+  msg.textContent='Sletter...';
+  await sb.from('sales').delete().neq('id','00000000-0000-0000-0000-000000000000');
+  await sb.from('registrations').delete().neq('id','00000000-0000-0000-0000-000000000000');
+  msg.textContent='✓ Slettet fra begge tabeller.';
+  loadRegistrations();loadCorrections();
+  setTimeout(()=>{msg.textContent='';},2000);
+};
+
+// Announcement
+window.openAnnAdmin=()=>{
+  document.getElementById('ann-e').value=activeAnn?activeAnn.emoji||'':'';
+  document.getElementById('ann-t').value=activeAnn?activeAnn.title||'':'';
+  document.getElementById('ann-b').value=activeAnn?activeAnn.body||'':'';
+  document.getElementById('ann-msg').textContent='';
+  document.getElementById('del-ann-btn').style.display=activeAnn?'inline-flex':'none';
+  window.openM('ann-modal');
+};
+window.publishAnn=async()=>{
+  const emoji=document.getElementById('ann-e').value.trim()||'📢';
+  const title=document.getElementById('ann-t').value.trim();
+  const body=document.getElementById('ann-b').value.trim();
+  const msg=document.getElementById('ann-msg');
+  if(!title){msg.textContent='Tittel er påkrevd.';return;}
+  msg.textContent='Publiserer...';
+  await sb.from('announcements').delete().neq('id','00000000-0000-0000-0000-000000000000');
+  const {error}=await sb.from('announcements').insert({emoji,title,body:body||null});
+  if(error){msg.textContent='Feil: '+error.message;return;}
+  msg.textContent='✓ Publisert!';
+  setTimeout(()=>{window.closeModal('ann-modal');},1500);
+};
+window.deleteAnn=async()=>{
+  if(!confirm('Fjerne?'))return;
+  await sb.from('announcements').delete().neq('id','00000000-0000-0000-0000-000000000000');
+  window.closeModal('ann-modal');
+};
+
+// Edit seller
+let _mySalesAllRows=[];
+let _mySalesCons=null;
+
+window.openMySales=async(sk)=>{
+  const cons=consultants.find(c=>c.name.toLowerCase()===sk);
+  if(!cons){return;}
+  _mySalesCons=cons;
+  const displayN=getDisplayName(cons.name);
+  document.getElementById('my-sales-title').innerHTML=`<i class="ti ti-list"></i> ${displayN} — Mine salg`;
+  document.getElementById('my-sales-tbody').innerHTML='<tr><td colspan="9" style="text-align:center;color:rgba(255,255,255,.3);padding:20px">Laster...</td></tr>';
+  window.openM('my-sales-modal');
+
+  // Hent ferske data
+  const {data}=await sb.from('registrations').select('*').order('date_sold',{ascending:true});
+  const firstName=cons.name.split(' ')[0].toLowerCase();
+  _mySalesAllRows=(data||[]).filter(r=>
+    r.consultant.toLowerCase()===cons.name.toLowerCase()||
+    r.consultant.split(' ')[0].toLowerCase()===firstName
+  );
+
+  // Bygg månedsliste
+  const months=[...new Set(_mySalesAllRows.map(r=>gmk(r.date_sold)).filter(Boolean))].sort();
+  const latestMonth=months[months.length-1]||'';
+  const sel=document.getElementById('my-sales-month');
+  sel.innerHTML='<option value="">Alle måneder</option>'+
+    months.map(m=>`<option value="${m}"${m===latestMonth?'selected':''}>${gml(m)}</option>`).join('');
+
+  renderMySales(latestMonth);
+};
+
+window.filterMySalesMonth=()=>{
+  const sel=document.getElementById('my-sales-month');
+  renderMySales(sel?sel.value:'');
+};
+
+function renderMySales(monthKey){
+  const rows=monthKey?_mySalesAllRows.filter(r=>gmk(r.date_sold)===monthKey):_mySalesAllRows;
+  const totalCpo=rows.reduce((a,r)=>a+(r.cpo||0),0);
+  const fiberSalg=rows.filter(r=>isF(r.product)).length;
+  const monthLabel=monthKey?gml(monthKey):'alle måneder';
+  document.getElementById('my-sales-sub').innerHTML=
+    `<span style="color:#34d399;font-weight:700">${fiberSalg} FIBER-salg</span> &nbsp;•&nbsp; `+
+    `<span style="color:#fbbf24;font-weight:700">${kr(totalCpo)}</span> total CPO &nbsp;•&nbsp; `+
+    `<span style="color:rgba(255,255,255,.4)">${rows.length} linjer — ${monthLabel}</span>`;
+
+  document.getElementById('my-sales-tbody').innerHTML=rows.length?rows.map(r=>{
+    const sb2=statusBadge(r.status);
+    return`<tr style="border-left:3px solid ${r.status==='godkjent'?'#34d399':r.status==='kansellert'?'#f87171':'#fbbf24'}">
+    <td><span class="status-btn ${sb2.cls}">${sb2.lbl}</span></td>
+    <td>${r.date_sold}</td>
+    <td>${r.month_name}</td>
+    <td>${r.week_number}</td>
+    <td>${r.order_number}</td>
+    <td>${r.quantity||1}</td>
+    <td>${r.product}</td>
+    <td style="color:${isF(r.product)?'#34d399':'rgba(255,255,255,.7)'};font-weight:600">${new Intl.NumberFormat('nb-NO').format(r.cpo)} kr</td>
+    <td><input class="comment-inp" value="${r.comment||''}" placeholder="Legg til kommentar..." onblur="saveComment('${r.id}',this.value)" onkeydown="if(event.key==='Enter')this.blur()"></td>
+  </tr>`;}).join(''):'<tr><td colspan="9" style="text-align:center;color:rgba(255,255,255,.3);padding:20px">Ingen salg denne måneden</td></tr>';
+}
+
+function statusBadge(status){
+  const s=status||'avventer';
+  const map={godkjent:{cls:'status-godkjent',lbl:'✓ Godkjent'},avventer:{cls:'status-avventer',lbl:'⏳ Avventer'},kansellert:{cls:'status-kansellert',lbl:'✕ Kansellert'}};
+  return map[s]||map['avventer'];
+}
+
+function statusSelect(id,current){
+  const s=current||'avventer';
+  return`<select class="status-select" onchange="saveStatus('${id}',this.value)" style="background:${s==='godkjent'?'rgba(16,185,129,.15)':s==='kansellert'?'rgba(239,68,68,.15)':'rgba(245,158,11,.15)'}">
+    <option value="avventer" ${s==='avventer'?'selected':''}>⏳ Avventer</option>
+    <option value="godkjent" ${s==='godkjent'?'selected':''}>✓ Godkjent</option>
+    <option value="kansellert" ${s==='kansellert'?'selected':''}>✕ Kansellert</option>
+  </select>`;
+}
+
+window.saveStatus=async(id,status)=>{
+  const reg=registrations.find(r=>r.id===id);
+  const msg=document.getElementById('admin-msg');
+  if(!reg){return;}
+
+  const originalCpo=reg.original_cpo>0?reg.original_cpo:reg.cpo;
+  const newCpo=status==='kansellert'?0:originalCpo;
+
+  // Lagre original_cpo første gang vi kansellerer
+  const update={status,cpo:newCpo};
+  if(status==='kansellert'&&!(reg.original_cpo>0)){
+    update.original_cpo=reg.cpo;
+  }
+
+  const {error}=await sb.from('registrations').update(update).eq('id',id);
+  if(error){alert('Feil: '+error.message);return;}
+
+  // Oppdater sales — finn nærmeste match på fornavn + dato + produkt
+  const firstName=reg.consultant.split(' ')[0];
+  if(status==='kansellert'){
+    const {data:matches}=await sb.from('sales').select('id,value')
+      .eq('consultant',firstName)
+      .eq('date_of_sale',reg.date_sold)
+      .ilike('product',reg.product)
+      .gt('value',0);
+    if(matches&&matches.length>0){
+      const best=matches.reduce((a,b)=>Math.abs(a.value-(reg.original_cpo||reg.cpo))<Math.abs(b.value-(reg.original_cpo||reg.cpo))?a:b);
+      await sb.from('sales').update({value:0}).eq('id',best.id);
+    }
+  } else {
+    const restoreVal=originalCpo;
+    const {data:matches}=await sb.from('sales').select('id')
+      .eq('consultant',firstName)
+      .eq('date_of_sale',reg.date_sold)
+      .ilike('product',reg.product)
+      .eq('value',0);
+    if(matches&&matches.length>0){
+      await sb.from('sales').update({value:restoreVal}).eq('id',matches[0].id);
+    }
+  }
+
+  reg.status=status;
+  reg.cpo=newCpo;
+  if(status==='kansellert'&&!(reg.original_cpo>0)) reg.original_cpo=originalCpo;
+
+  loadRegistrations();
+  msg.textContent='✓ Status oppdatert';
+  setTimeout(()=>{msg.textContent='';},1200);
+};
+
+window.saveComment=async(id,comment,rowEl)=>{
+  const {error}=await sb.from('registrations').update({comment:comment||null}).eq('id',id);
+  const msg=document.getElementById('my-sales-msg');
+  if(error){
+    msg.textContent='Feil: kunne ikke lagre.';
+    setTimeout(()=>{msg.textContent='';},2000);
+  } else {
+    msg.textContent='✓ Lagret';
+    setTimeout(()=>{msg.textContent='';},1200);
+    // Oppdater lokalt i registrations-arrayen så det ikke forsvinner ved neste åpning
+    const local=registrations.find(r=>r.id===id);
+    if(local) local.comment=comment||null;
+  }
+};
+window.openEditModal=sk=>{
+  window.requireAdmin(()=>{
+  currentSeller=sk;
+  const mRows=allRows.filter(r=>getKey(r.name)===sk&&gmk(r.dateStr)===currentMK);
+  const actualSalg=mRows.filter(r=>isF(r.product)).length;
+  const actualOmset=mRows.reduce((a,r)=>a+r.value,0);
+  const existing=corrections.find(c=>c.consultant===sk&&c.month_key===currentMK);
+  document.getElementById('edit-title').innerHTML=`<i class="ti ti-pencil"></i> Rediger ${sk}`;
+  document.getElementById('edit-salg-a').textContent=actualSalg+' salg';
+  document.getElementById('edit-omset-a').textContent=kr(actualOmset);
+  const si=document.getElementById('edit-salg');
+  const oi=document.getElementById('edit-omset');
+  si.value=existing&&existing.salg_override!==null?existing.salg_override:'';
+  oi.value=existing&&existing.omset_override!==null?existing.omset_override:'';
+  si.className='ei'+(existing&&existing.salg_override!==null?' ov2':'');
+  oi.className='ei'+(existing&&existing.omset_override!==null?' ov2':'');
+  document.getElementById('clear-btn').style.display=existing?'inline-flex':'none';
+  document.getElementById('edit-msg').textContent='';
+  window.openM('edit-modal');
+  });
+};
+window.saveEdit=async()=>{
+  const sk=currentSeller,lm=currentMK;
+  const sv=document.getElementById('edit-salg').value;
+  const ov=document.getElementById('edit-omset').value;
+  const salg_override=sv!==''?+sv:null;
+  const omset_override=ov!==''?+ov:null;
+  const msg=document.getElementById('edit-msg');
+  if(salg_override===null&&omset_override===null){msg.textContent='Skriv inn minst ett tall.';return;}
+  msg.textContent='Lagrer...';
+  const existing=corrections.find(c=>c.consultant===sk&&c.month_key===lm);
+  let error;
+  if(existing){({error}=await sb.from('corrections').update({salg_override,omset_override}).eq('id',existing.id));}
+  else{({error}=await sb.from('corrections').insert({consultant:sk,month_key:lm,salg_override,omset_override}));}
+  if(error){msg.textContent='Feil: '+error.message;return;}
+  msg.textContent='✓ Lagret!';
+  loadRegistrations();loadCorrections();
+  setTimeout(()=>{window.closeModal('edit-modal');},1200);
+};
+window.clearEdit=async()=>{
+  if(!confirm('Fjerne korrigeringen?'))return;
+  const existing=corrections.find(c=>c.consultant===currentSeller&&c.month_key===currentMK);
+  if(existing)await sb.from('corrections').delete().eq('id',existing.id);
+  window.closeModal('edit-modal');
+};
+
+// Admin
+// Admin-tilgang med session-hukommelse
+window._adminUnlocked=false;
+window._pendingAdminAction=null;
+
+window.requireAdmin=(action)=>{
+  if(window._adminUnlocked){action();return;}
+  window._pendingAdminAction=action;
+  document.getElementById('admin-pw').value='';
+  document.getElementById('pw-msg').textContent='';
+  window.openM('admin-pw-modal');
+};
+
+window.openAdmin=()=>{
+  if(window._adminUnlocked){
+    loadRegistrations();renderConsList();showAdminTab('log');window.openM('admin-modal');return;
+  }
+  window._pendingAdminAction=()=>{loadRegistrations();renderConsList();showAdminTab('log');window.openM('admin-modal');};
+  document.getElementById('admin-pw').value='';
+  document.getElementById('pw-msg').textContent='';
+  window.openM('admin-pw-modal');
+};
+
+window.checkAdmin=async()=>{
+  const pw=document.getElementById('admin-pw').value;
+  const msg=document.getElementById('pw-msg');
+  msg.textContent='Sjekker...';
+  try{
+    if(!window._adminPassword){
+      const docSnap=await getDoc(doc(db,'site_config','admin_password'));
+      if(docSnap.exists()) window._adminPassword=docSnap.data().value;
+    }
+    const data={value:window._adminPassword};
+    if(data&&data.value===pw){
+      window._adminUnlocked=true;
+      setTimeout(()=>{window._adminUnlocked=false;},30*60*1000);
+      msg.textContent='';
+      window.closeModal('admin-pw-modal');
+      if(window._pendingAdminAction){window._pendingAdminAction();window._pendingAdminAction=null;}
+    } else {
+      msg.textContent='Feil kode.';
+    }
+  } catch(e){
+    msg.textContent='Feil ved tilkobling.';
+  }
+};
+window.showAdminTab=(tab)=>{
+  document.getElementById('admin-log-section').style.display=tab==='log'?'block':'none';
+  document.getElementById('admin-cons-section').style.display=tab==='cons'?'block':'none';
+  document.getElementById('admin-uke-section').style.display=tab==='uke'?'block':'none';
+  document.getElementById('copy-log-btn').style.display=tab==='log'?'inline-flex':'none';
+  document.getElementById('copy-log-no-status-btn').style.display=tab==='log'?'inline-flex':'none';
+  document.getElementById('team-filter-row').style.display=tab==='log'?'flex':'none';
+  document.getElementById('tab-log').className='mbtn '+(tab==='log'?'mb-blue':'mb-cancel');
+  document.getElementById('tab-cons').className='mbtn '+(tab==='cons'?'mb-blue':'mb-cancel');
+  document.getElementById('tab-uke').className='mbtn '+(tab==='uke'?'mb-blue':'mb-cancel');
+  if(tab==='uke') renderUkeStats();
+};
+
+let activeUkeTeamFilter='Total';
+
+window.setUkeTeamFilter=filter=>{
+  activeUkeTeamFilter=filter;
+  ['Total','Team 1','Team 2','Team 3'].forEach(t=>{
+    const id='utf-'+t.toLowerCase().replace(' ','');
+    const el=document.getElementById(id);
+    if(el)el.className='mbtn '+(t===filter?'mb-blue':'mb-cancel');
+  });
+  renderUkeStats();
+};
+
+function renderUkeStats(){
+  const tbody=document.getElementById('uke-tbody');
+  if(!tbody)return;
+
+  // Filtrer på team og ekskluder kansellerte
+  let aktive=registrations.filter(r=>(r.status||'avventer')!=='kansellert');
+  if(activeUkeTeamFilter!=='Total'){
+    const teamMembers=consultants.filter(c=>c.team_name===activeUkeTeamFilter).map(c=>c.name.toLowerCase());
+    aktive=aktive.filter(r=>teamMembers.some(m=>r.consultant.toLowerCase().includes(m.split(' ')[0].toLowerCase())));
+  }
+
+  // Uker totalt
+  const uker={};
+  aktive.forEach(r=>{
+    const uke=r.week_number;if(!uke)return;
+    if(!uker[uke])uker[uke]={fiber:0,wifi:0,tbb:0};
+    const p=(r.product||'').toUpperCase();
+    if(p.includes('FIBER'))uker[uke].fiber++;
+    else if(p.includes('WIFI CONNECT INNE'))uker[uke].wifi++;
+    else if(p.startsWith('TBB'))uker[uke].tbb++;
+  });
+  const sortedUker=Object.keys(uker).map(Number).sort((a,b)=>a-b);
+
+  if(!sortedUker.length){
+    tbody.innerHTML='<tr><td colspan="4" style="text-align:center;color:rgba(255,255,255,.3);padding:20px">Ingen data</td></tr>';
+    document.getElementById('uke-individ-head').innerHTML='';
+    document.getElementById('uke-individ-tbody').innerHTML='';
+    return;
+  }
+
+  tbody.innerHTML=sortedUker.map(uke=>`<tr>
+    <td style="font-weight:700">Uke ${uke}</td>
+    <td style="color:#34d399;font-weight:700;font-size:15px">${uker[uke].fiber}</td>
+    <td style="color:#a5b4fc;font-weight:700;font-size:15px">${uker[uke].wifi}</td>
+    <td style="color:#fbbf24;font-weight:700;font-size:15px">${uker[uke].tbb}</td>
+  </tr>`).join('')+
+  `<tr style="border-top:1px solid rgba(255,255,255,.15)">
+    <td style="font-weight:700;color:rgba(255,255,255,.5)">Totalt</td>
+    <td style="color:#34d399;font-weight:800;font-size:15px">${sortedUker.reduce((a,u)=>a+uker[u].fiber,0)}</td>
+    <td style="color:#a5b4fc;font-weight:800;font-size:15px">${sortedUker.reduce((a,u)=>a+uker[u].wifi,0)}</td>
+    <td style="color:#fbbf24;font-weight:800;font-size:15px">${sortedUker.reduce((a,u)=>a+uker[u].tbb,0)}</td>
+  </tr>`;
+
+  // Per konsulent per uke — kun Fiber
+  const fiberRows=aktive.filter(r=>(r.product||'').toUpperCase().includes('FIBER'));
+  const consSet=new Set(fiberRows.map(r=>r.consultant));
+  const consNames=[...consSet].sort();
+
+  // Bygg per-konsulent-per-uke-map
+  const grid={};
+  consNames.forEach(c=>{grid[c]={};sortedUker.forEach(u=>{grid[c][u]=0;});});
+  fiberRows.forEach(r=>{
+    if(grid[r.consultant]&&r.week_number) grid[r.consultant][r.week_number]++;
+  });
+
+  // Render individ-tabell
+  document.getElementById('uke-individ-head').innerHTML=`<tr>
+    <th>Konsulent</th>
+    ${sortedUker.map(u=>`<th style="color:#34d399">Uke ${u}</th>`).join('')}
+    <th style="color:#34d399">Totalt</th>
+  </tr>`;
+
+  document.getElementById('uke-individ-tbody').innerHTML=consNames.map(c=>{
+    const cons=consultants.find(x=>x.name===c);
+    // Sjekk om det er duplikat fornavn blant consNames
+    const firstName=c.split(' ')[0];
+    const hasDuplicate=consNames.filter(n=>n.split(' ')[0]===firstName).length>1;
+    const dispName=hasDuplicate?(c.split(' ')[0]+' '+(c.split(' ')[1]?.[0]||'')+'.').trim():c.split(' ')[0];
+    const total=sortedUker.reduce((a,u)=>a+(grid[c][u]||0),0);
+    if(total===0) return ''; // Skjul konsulenter uten salg
+    return`<tr>
+      <td style="font-weight:600">${dispName}</td>
+      ${sortedUker.map(u=>`<td style="text-align:center;color:${(grid[c][u]||0)>0?'#f1f5f9':'rgba(255,255,255,.2)'};font-weight:${(grid[c][u]||0)>0?'700':'400'}">${grid[c][u]||0}</td>`).join('')}
+      <td style="text-align:center;color:#34d399;font-weight:800">${total}</td>
+    </tr>`;
+  }).join('');
+}
+
+window.setStatusFilter=filter=>{
+  activeStatusFilter=filter;
+  ['alle','avventer','godkjent','kansellert'].forEach(s=>{
+    const el=document.getElementById(`sf-${s}`);
+    if(el) el.className='mbtn '+(s===filter?'mb-blue':'mb-cancel');
+    // Behold fargen på status-knappene
+    if(el&&s!=='alle'&&s!==filter){
+      const colors={avventer:'color:#fbbf24;border-color:rgba(245,158,11,.3)',godkjent:'color:#34d399;border-color:rgba(16,185,129,.3)',kansellert:'color:#f87171;border-color:rgba(239,68,68,.3)'};
+      el.style.cssText=colors[s]||'';
+    } else if(el&&s!=='alle'){
+      el.style.cssText='';
+    }
+  });
+  renderAdminTable();
+};
+
+window.setTeamFilter=filter=>{
+  activeTeamFilter=filter;
+  ['Total','Team 1','Team 2','Team 3'].forEach(t=>{
+    const id='tf-'+t.toLowerCase().replace(' ','');
+    const el=document.getElementById(id);
+    if(el)el.className='mbtn '+(t===filter?'mb-blue':'mb-cancel');
+  });
+  renderAdminTable();
+};
+
+function renderAdminTable(){
+  const tbody=document.getElementById('admin-tbody');
+  if(!tbody)return;
+
+  // Oppdater månedsveksler med alle tilgjengelige måneder
+  const adminMonthSel=document.getElementById('admin-month-sel');
+  if(adminMonthSel){
+    const months=[...new Set(registrations.map(r=>gmk(r.date_sold)).filter(Boolean))].sort();
+    const curVal=adminMonthSel.value;
+    adminMonthSel.innerHTML='<option value="">Alle måneder</option>'+
+      months.map(m=>`<option value="${m}">${gml(m)}</option>`).join('');
+    if(curVal)adminMonthSel.value=curVal;
+    else adminMonthSel.value=months[months.length-1]||'';
+  }
+
+  const selMonth=adminMonthSel?adminMonthSel.value:'';
+
+  let rows=registrations;
+
+  // Filtrer på valgt måned
+  if(selMonth) rows=rows.filter(r=>gmk(r.date_sold)===selMonth);
+
+  // Filtrer på team
+  if(activeTeamFilter!=='Total'){
+    const teamMembers=consultants.filter(c=>c.team_name===activeTeamFilter).map(c=>c.name.toLowerCase());
+    rows=rows.filter(r=>teamMembers.some(m=>r.consultant.toLowerCase().includes(m.split(' ')[0].toLowerCase())));
+  }
+  if(activeStatusFilter!=='alle'){
+    rows=rows.filter(r=>(r.status||'avventer')===activeStatusFilter);
+  }
+  tbody.innerHTML=rows.map(r=>`<tr>
+    <td><button onclick="deleteReg('${r.id}')" style="background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.25);border-radius:5px;padding:2px 8px;font-size:10px;cursor:pointer;font-family:Inter,sans-serif"><i class="ti ti-trash"></i></button></td>
+    <td>${statusSelect(r.id,r.status)}</td>
+    <td>${r.consultant}</td><td>${r.ep_user}</td><td>${r.date_sold}</td>
+    <td>${r.month_name}</td><td>${r.week_number}</td><td>${r.team}</td>
+    <td>${r.order_number}</td><td>${r.nettbutikk||'0'}</td><td>${r.quantity||1}</td>
+    <td>${r.product}</td><td>${r.cpo}</td>
+  </tr>`).join('');
+}
+
+window.copyLog=()=>{
+  const selMonth=document.getElementById('admin-month-sel')?.value||'';
+  let rows=registrations;
+  if(selMonth) rows=rows.filter(r=>gmk(r.date_sold)===selMonth);
+  if(activeTeamFilter!=='Total'){
+    const teamMembers=consultants.filter(c=>c.team_name===activeTeamFilter).map(c=>c.name.toLowerCase());
+    rows=rows.filter(r=>teamMembers.some(m=>r.consultant.toLowerCase().includes(m.split(' ')[0].toLowerCase())));
+  }
+  if(activeStatusFilter!=='alle') rows=rows.filter(r=>(r.status||'avventer')===activeStatusFilter);
+  const header='Konsulent\tep-bruker\tDato solgt\tMåned\tUke\tTeam\tOrdrenr.\tNettbutikk\tAntall\tProdukt\tCPO\tStatus';
+  const lines=rows.map(r=>[r.consultant,r.ep_user,r.date_sold,r.month_name,r.week_number,r.team,r.order_number,r.nettbutikk||'0',r.quantity||1,r.product,r.cpo,r.status||'avventer'].join('\t'));
+  navigator.clipboard.writeText([header,...lines].join('\n'));
+  document.getElementById('admin-msg').textContent='✓ Kopiert til Salgsark!';
+  setTimeout(()=>{document.getElementById('admin-msg').textContent='';},2000);
+};
+
+// Consultant management
+function renderConsList(){
+  const el=document.getElementById('cons-list');
+  if(!el)return;
+  el.innerHTML=consultants.map(c=>`
+    <div class="cons-row">
+      <span class="cons-name">${c.name}</span>
+      <span class="cons-user">${c.ep_user}</span>
+      <select class="sel" style="width:90px;padding:4px 8px;font-size:11px" onchange="updateConsTeam('${c.id}',this.value)">
+        <option ${c.team_name==='Team 1'?'selected':''}>Team 1</option>
+        <option ${c.team_name==='Team 2'?'selected':''}>Team 2</option>
+        <option ${c.team_name==='Team 3'?'selected':''}>Team 3</option>
+      </select>
+      <span class="chip" style="font-size:10px;${c.active?'color:#34d399':'color:#f87171'}">${c.active?'Aktiv':'Inaktiv'}</span>
+      <button class="mbtn ${c.active?'mb-amber':'mb-green'}" style="padding:4px 10px;font-size:10px" onclick="toggleConsultant('${c.id}',${c.active})">${c.active?'Deaktiver':'Aktiver'}</button>
+      <button class="mbtn mb-red" style="padding:4px 10px;font-size:10px" onclick="removeConsultant('${c.id}')">Fjern</button>
+    </div>`).join('');
+}
+window.deleteReg=async(id)=>{
+  if(!confirm('Slette denne linjen fra adminloggen?'))return;
+  // Find the registration to also remove from sales
+  const reg=registrations.find(r=>r.id===id);
+  const {error}=await sb.from('registrations').delete().eq('id',id);
+  if(error){alert('Feil: '+error.message);return;}
+  // Also try to remove matching row from sales
+  if(reg){
+    await sb.from('sales').delete()
+      .eq('consultant',reg.consultant.split(' ')[0])
+      .eq('date_of_sale',reg.date_sold)
+      .eq('product',reg.product)
+      .eq('value',reg.cpo)
+      .limit(1);
+  }
+  document.getElementById('admin-msg').textContent='✓ Linje slettet.';
+  loadRegistrations();
+  setTimeout(()=>{document.getElementById('admin-msg').textContent='';},2000);
+};
+window.copyLogNoStatus=()=>{
+  const selMonth=document.getElementById('admin-month-sel')?.value||'';
+  let rows=registrations;
+  if(selMonth) rows=rows.filter(r=>gmk(r.date_sold)===selMonth);
+  if(activeTeamFilter!=='Total'){
+    const teamMembers=consultants.filter(c=>c.team_name===activeTeamFilter).map(c=>c.name.toLowerCase());
+    rows=rows.filter(r=>teamMembers.some(m=>r.consultant.toLowerCase().includes(m.split(' ')[0].toLowerCase())));
+  }
+  if(activeStatusFilter!=='alle') rows=rows.filter(r=>(r.status||'avventer')===activeStatusFilter);
+  const header='Konsulent\tep-bruker\tDato solgt\tMåned\tUke\tTeam\tOrdrenr.\tNettbutikk\tAntall\tProdukt\tCPO';
+  const lines=rows.map(r=>[r.consultant,r.ep_user,r.date_sold,r.month_name,r.week_number,r.team,r.order_number,r.nettbutikk||'0',r.quantity||1,r.product,r.cpo].join('\t'));
+  navigator.clipboard.writeText([header,...lines].join('\n'));
+  document.getElementById('admin-msg').textContent='✓ Kopiert til Internrapport!';
+  setTimeout(()=>{document.getElementById('admin-msg').textContent='';},2000);
+};
+window.updateConsTeam=async(id,team_name)=>{
+  const {error}=await sb.from('consultants').update({team_name}).eq('id',id);
+  const msg=document.getElementById('admin-msg');
+  if(error){
+    msg.textContent='Feil: kunne ikke lagre team — '+error.message;
+    setTimeout(()=>{msg.textContent='';},3000);
+  } else {
+    // Oppdater lokalt så det ikke resettes
+    const local=consultants.find(c=>c.id===id);
+    if(local) local.team_name=team_name;
+    msg.textContent='✓ Team oppdatert';
+    setTimeout(()=>{msg.textContent='';},1500);
+  }
+};
+window.addConsultant=async()=>{
+  const name=document.getElementById('new-cons-name').value.trim();
+  const ep_user=document.getElementById('new-cons-user').value.trim();
+  const team_name=document.getElementById('new-cons-team').value;
+  const msg=document.getElementById('admin-msg');
+  if(!name||!ep_user){msg.textContent='Fyll inn navn og ep-bruker.';return;}
+  const {error}=await sb.from('consultants').insert({name,ep_user,active:true,team_name});
+  if(error){msg.textContent='Feil: '+error.message;return;}
+  document.getElementById('new-cons-name').value='';
+  document.getElementById('new-cons-user').value='';
+  msg.textContent='✓ Lagt til!';
+  setTimeout(()=>{msg.textContent='';},2000);
+};
+window.toggleConsultant=async(id,active)=>{
+  await sb.from('consultants').update({active:!active}).eq('id',id);
+};
+window.removeConsultant=async(id)=>{
+  if(!confirm('Fjerne konsulenten? Salgene deres beholdes i loggen.'))return;
+  await sb.from('consultants').delete().eq('id',id);
+};
+
+let adminSelectedMK=null;
+
+function render(){
+  if(!consultants.length)return;
+  const months=[...new Set(allRows.map(r=>gmk(r.dateStr)).filter(Boolean))].sort();
+  const lm=months[months.length-1]||'08.2026';
+  currentMK=lm;
+  document.getElementById('month-lbl').textContent=gml(lm);
+
+  // Oppdater månedsveksleren i admin hvis åpen
+  const adminMonthSel=document.getElementById('admin-month-sel');
+  if(adminMonthSel&&adminMonthSel.innerHTML===''){
+    adminMonthSel.innerHTML=months.map(m=>`<option value="${m}"${m===lm?'selected':''}>${gml(m)}</option>`).join('');
+  }
+
+  const mRows=allRows.filter(r=>gmk(r.dateStr)===lm);
+
+  // Vis aktive konsulenter + inaktive som har salg denne måneden
+  const visibleConsultants=consultants.filter(c=>{
+    if(c.active) return true;
+    // Inaktiv men har salg denne måneden — vis frem til neste måned
+    const key=c.name.toLowerCase();
+    const firstName=c.name.split(' ')[0];
+    const lastName=c.name.split(' ').pop();
+    return mRows.some(r=>{
+      const rn=r.name.toLowerCase().trim();
+      const aliased=ALIAS[rn]||rn;
+      return aliased===key||aliased===lastName.toLowerCase()||rn===firstName.toLowerCase()||rn===key;
+    });
+  });
+
+  const sd=visibleConsultants.map(c=>{
+    const key=c.name.toLowerCase();
+    const firstName=c.name.split(' ')[0];
+    const lastName=c.name.split(' ').pop();
+    const rows=mRows.filter(r=>{
+      const rn=r.name.toLowerCase().trim();
+      const aliased=ALIAS[rn]||rn;
+      return aliased===key||aliased===lastName.toLowerCase()||rn===firstName.toLowerCase()||rn===key;
+    });
+    const aS=rows.filter(r=>isF(r.product)).length;
+    const aO=rows.reduce((a,r)=>a+r.value,0);
+    const corr=corrections.find(x=>x.consultant===key&&x.month_key===lm);
+    return{key,name:getDisplayName(c.name),fullName:c.name,salg:corr&&corr.salg_override!==null?corr.salg_override:aS,omset:corr&&corr.omset_override!==null?corr.omset_override:aO,hasCorr:!!corr};
+  });
+
+  const wd=sd.filter(s=>s.salg>0||s.omset>0).sort((a,b)=>b.omset-a.omset||b.salg-a.salg);
+  const nd=sd.filter(s=>s.salg===0&&s.omset===0);
+  const sorted=[...wd,...nd];
+
+  const tO=sorted.reduce((a,s)=>a+s.omset,0);
+  const tS=sorted.reduce((a,s)=>a+s.salg,0);
+  const snitt=sorted.length?Math.round(tO/sorted.length):0;
+  const foran=sorted.filter(s=>s.salg>=SMAL||s.omset>=OMAL).length;
+
+  document.getElementById('stat-omset').textContent=kr(tO);
+  document.getElementById('stat-salg').textContent=tS;
+  document.getElementById('stat-snitt').textContent=kr(snitt);
+  document.getElementById('stat-paamaal').innerHTML=foran+'<span style="font-size:14px;color:rgba(255,255,255,.3)"> / '+sorted.length+'</span>';
+
+  const top3=wd.slice(0,3);
+  const order=[1,0,2];
+  document.getElementById('podium').innerHTML=order.map(idx=>{
+    const s=top3[idx];
+    if(!s)return'<div class="pod-col"></div>';
+    const place=idx+1;
+    const [bg,fg]=gac(s.name);
+    const crown=place===1?'<div class="crown">👑</div>':'';
+    return`<div class="pod-col pod-${place}" onclick="openMySales('${s.key}')" oncontextmenu="event.preventDefault();window.requireAdmin(()=>openEditModal('${s.key}'))" style="cursor:pointer" title="Klikk for salgslogg • Høyreklikk for å redigere (admin)">
+      <div class="pod-av" style="background:${fg};color:${bg}">${crown}${ini(s.name)}</div>
+      <div class="pod-name">${s.name}</div>
+      <div class="pod-sub">${s.salg} fiber-salg</div>
+      <div class="pod-bar"><div class="pod-rank">${place}</div><div class="pod-val">${kr(s.omset)}</div></div>
+    </div>`;
+  }).join('');
+
+  const chasers=sorted.slice(3);
+  const maxO=chasers.length?chasers[0].omset:1;
+  document.getElementById('chase-list').innerHTML=chasers.map((s,i)=>{
+    const pct=maxO>0?Math.min(Math.round(s.omset/maxO*100),100):0;
+    const [bg,fg]=gac(s.name);
+    const clr=s.salg>=SMAL||s.omset>=OMAL?'#34d399':pct>=50?'#fbbf24':'#818cf8';
+    return`<div class="chase-row" onclick="openMySales('${s.key}')" oncontextmenu="event.preventDefault();window.requireAdmin(()=>openEditModal('${s.key}'))" title="Klikk for salgslogg • Høyreklikk for å redigere (admin)">
+      <span class="chase-rank">${i+4}</span>
+      <div class="chase-av" style="background:${fg};color:${bg}">${ini(s.name)}</div>
+      <span class="chase-name">${s.name}</span>
+      <div class="chase-bar-bg"><div class="chase-bar-fill" style="width:${pct}%;background:${clr}"></div></div>
+      <span class="chase-val">${kr(s.omset)}</span>
+    </div>`;
+  }).join('');
+
+  const recent=[...allRows].sort((a,b)=>pd(b.dateStr)-pd(a.dateStr)).slice(0,14);
+  document.getElementById('feed-list').innerHTML=recent.map(r=>{
+    const [bg,fg]=gac(r.name);
+    // Finn konsulent for å bruke riktig visningsnavn
+    const cons=consultants.find(c=>c.name.split(' ')[0].toLowerCase()===r.name.toLowerCase()||c.name.toLowerCase()===r.name.toLowerCase());
+    const dispName=cons?getDisplayName(cons.name):r.name;
+    return`<div class="feed-item"><div class="feed-av" style="background:${fg};color:${bg}">${ini(r.name)}</div><div class="feed-info"><div class="feed-name">${dispName}</div><div class="feed-prod">${r.product}</div></div><div class="feed-val">+${kr(r.value)}</div></div>`;
+  }).join('');
+}
+
+function tick(){
+  const now=new Date();
+  document.getElementById('clock').textContent=now.toLocaleDateString('nb-NO',{weekday:'short',day:'numeric',month:'short'})+' — '+now.toLocaleTimeString('nb-NO',{hour:'2-digit',minute:'2-digit'});
+}
+
+async function init(){
+  await loadConsultants();
+  await Promise.all([loadRegistrations(),loadCorrections(),loadAnn()]);
+  tick();setInterval(tick,30000);
+  setInterval(()=>{loadRegistrations();loadCorrections();loadAnn();},5000);
+}
+init();
+</script>
+</body>
+</html>
